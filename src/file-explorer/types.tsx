@@ -5,10 +5,10 @@ export interface FileProps {
   path: string;
   /** 文件类型 */
   type: 'file' | 'directory';
-  /** 文件后缀名 */
-  extension: string;
   /** 文件名 */
   name: string;
+  /** 文件后缀名 */
+  extension?: string;
   /** 文件大小 */
   size?: number;
   /** 文件状态 */
@@ -31,9 +31,7 @@ export interface FileExplorerProps {
   /** 文件点击 */
   onClick?: (file: FileProps) => void;
   /** */
-  onAddFile?: (file: FileProps) => void;
-  /** */
-  onAddFolder?: (file: FileProps) => void;
+  onCreateFile?: (file: FileProps) => void;
   /** */
   onRefresh?: () => void;
   /** 项目名称 */

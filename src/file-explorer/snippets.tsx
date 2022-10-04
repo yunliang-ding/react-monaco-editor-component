@@ -43,6 +43,7 @@ export const labelRender = (file, onAddDone, prefixCls) => {
         border: 'none',
         width: '100%',
         outline: '1px solid #1890ff',
+        color: '#fff',
       }}
     />
   ) : (

@@ -1,11 +1,12 @@
 import { FileExplorerProps, FileProps } from './types';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { RenderFileTree } from './snippets';
 import { getOpenFiles } from './util';
 import Header from '@/compontent/header';
 import CreateSpin from '@/compontent/create-spin';
 import { getFileByPath, isEmpty, uuid } from '@/util';
 import './index.less';
+import { cloneDeep } from 'lodash';
 
 const prefixCls = 'ide-component-file-explorer';
 
@@ -21,10 +22,10 @@ export default ({
   projectName = 'EXPLORER',
   header = true,
   onRefresh,
-  onAddFile,
-  onAddFolder,
+  onCreateFile = () => {},
   explorerRef,
 }: FileExplorerProps) => {
+  const editFileRef = useRef<FileProps>();
   const [files, setFiles] = useState<FileProps[]>();
   const [selectedKey, setSelected] = useState<string>();
   // 扩展 api
@@ -32,7 +33,9 @@ export default ({
     explorerRef.current.openSpin = spin.open;
     explorerRef.current.closeSpin = spin.close;
     explorerRef.current.setSelectedKey = setSelected;
-    explorerRef.current.setFiles = setFiles;
+    explorerRef.current.setFiles = (files) => {
+      setFiles(cloneDeep(files)); // 剔除引用关系
+    };
     explorerRef.current.getFields = () => {
       return files;
     };
@@ -52,14 +55,17 @@ export default ({
   }, []);
   // 文件夹全部收起
   const onUnFold = () => {};
-  // 打开新增表单文件
-  const addNewFile = () => {
-    let currentNode = files; // 默认节点为根
+  // 打开新增文件
+  const createFile = (type: 'file' | 'directory') => {
+    let currentNode = {
+      path: files[0]?.path.substring(0, files[0]?.path.lastIndexOf('/')),
+      children: files,
+    }; // 默认节点为根
     if (selectedKey) {
       const currentFile = getFileByPath(selectedKey, files);
       if (currentFile.type === 'directory') {
         // 当前目录为根
-        currentNode = currentFile.children;
+        currentNode = currentFile;
       } else {
         const parentPath = selectedKey.substring(
           0,
@@ -68,47 +74,67 @@ export default ({
         const currentFileParent = getFileByPath(parentPath, files);
         if (!isEmpty(currentFileParent)) {
           // 取父节点目录为根
-          console.log('currentFileParent', currentFileParent);
-          currentNode = currentFileParent.children;
+          currentNode = currentFileParent;
         }
       }
     }
-    currentNode.push({
-      path: uuid(12),
+    editFileRef.current = {
+      path: [currentNode.path, uuid(6)].join(','),
       name: '',
       status: 'new',
-      extension: '',
-      type: 'file',
-    });
-    setFiles([...files]);
-  };
-  const addNewFileDone = (fileName) => {
-    if (isEmpty(fileName)) {
-      const _files = files.filter((i) => i.status !== 'new');
-      return setFiles(_files);
+      type,
+    };
+    if (type === 'directory') {
+      editFileRef.current.children = [];
     }
-    const idx = files.findIndex((i) => i.status === 'new');
-    // 创建文件
-    files[idx].path = `${files[0].path}/${fileName}`;
-    files[idx].name = fileName;
-    files[idx].status = 'nomal';
+    currentNode.children.push(editFileRef.current);
     setFiles([...files]);
   };
+  // 新增文件完毕
+  const createFileDone = async (fileName: string) => {
+    editFileRef.current.extension = fileName.substring(
+      fileName.lastIndexOf('.'),
+    );
+    editFileRef.current.name = fileName;
+    editFileRef.current.status = 'nomal';
+    editFileRef.current.path = [
+      editFileRef.current.path.split(',')[0],
+      fileName,
+    ].join('/');
+    // 等待外面确认
+    try {
+      spin.open();
+      await onCreateFile(editFileRef.current);
+      setFiles([...files]);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      spin.close();
+    }
+  };
+  /** 渲染 vNode */
   return (
     <div className={`${prefixCls} show-file-icons`} style={style}>
       {header && (
         <Header
-          title={[projectName.toLocaleUpperCase()].join(': ')}
+          title={[
+            'explorer'.toLocaleUpperCase(),
+            projectName.toLocaleUpperCase(),
+          ].join(': ')}
           actions={[
             {
               icon: 'codicon codicon-new-file',
               title: 'New File',
-              onClick: addNewFile,
+              onClick: () => {
+                createFile('file');
+              },
             },
             {
               icon: 'codicon codicon-new-file',
               title: 'New Folder',
-              onClick: onAddFolder,
+              onClick: () => {
+                createFile('directory');
+              },
             },
             {
               icon: 'codicon codicon-refresh',
@@ -129,7 +155,7 @@ export default ({
           selectedKey={selectedKey}
           prefixCls={prefixCls}
           onFileClick={onFileClick}
-          onAddDone={addNewFileDone}
+          onAddDone={createFileDone}
         />
       </div>
     </div>

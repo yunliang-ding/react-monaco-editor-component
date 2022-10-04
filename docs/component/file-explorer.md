@@ -16,6 +16,7 @@ export default () => {
   /** 请求数据 */
   const init = async () => {
     explorerRef.current.openSpin();
+    // 模拟接口
     await new Promise((res) => setTimeout(res, 1000));
     explorerRef.current.setFiles(files);
     explorerRef.current.closeSpin();
@@ -30,10 +31,8 @@ export default () => {
       onClick={(file) => {
         console.log('onClick', file);
       }}
-      onAddFile={(file) => {
-        console.log(file);
-      }}
-      onAddFolder={(file) => {
+      onCreateFile={async (file) => {
+        await new Promise((res) => setTimeout(res, 1000));
         console.log(file);
       }}
       onRename={(file) => {
