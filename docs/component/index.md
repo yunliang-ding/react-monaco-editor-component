@@ -1,6 +1,6 @@
 ---
 title: 介绍
-order: 2
+order: 1
 toc: menu
 nav:
   title: 组件

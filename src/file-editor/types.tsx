@@ -1,21 +1,21 @@
 import { FileProps } from '../file-explorer/types';
-import { CSSProperties, MutableRefObject } from 'react';
+import { CSSProperties, MutableRefObject, ReactNode } from 'react';
 
 export interface FileEditorProps {
   files: FileProps[];
   style?: CSSProperties;
+  selectedKey: string;
+  onClick: (file: FileProps) => void;
+  onClose: (file: FileProps, index?: number) => void;
+  options?: object;
+  editorMonacoRef?: MutableRefObject<{}>;
+  extraExpansionRender?: (file: FileProps) => any[];
   extra?: {
     key: string;
     icon: string;
     title: string;
   }[];
   onExtraClick?: any;
-  selectedKey: string;
-  onClick: (key: string) => void;
-  onClose: (file: FileProps) => void;
-  options?: object;
-  editorMonacoRef?: MutableRefObject<{}>;
-  extraExpansionRender: any;
 }
 
 export interface FileEditorMainProps extends FileEditorProps {

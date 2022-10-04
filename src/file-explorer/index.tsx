@@ -5,8 +5,8 @@ import { getOpenFiles } from './util';
 import Header from '@/compontent/header';
 import CreateSpin from '@/compontent/create-spin';
 import { getFileByPath, isEmpty, uuid } from '@/util';
-import './index.less';
 import { cloneDeep } from 'lodash';
+import './index.less';
 
 const prefixCls = 'ide-component-file-explorer';
 
@@ -57,10 +57,11 @@ export default ({
   const onUnFold = () => {};
   // 打开新增文件
   const createFile = (type: 'file' | 'directory') => {
+    // 默认节点为根
     let currentNode = {
       path: files[0]?.path.substring(0, files[0]?.path.lastIndexOf('/')),
       children: files,
-    }; // 默认节点为根
+    };
     if (selectedKey) {
       const currentFile = getFileByPath(selectedKey, files);
       if (currentFile.type === 'directory') {

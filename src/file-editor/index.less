@@ -36,18 +36,10 @@
           text-overflow: ellipsis;
           font-size: 12px;
           position: relative;
-          &-labelM {
-            color: #e2c08d;
-          }
-          &-labelU {
-            color: #73c991;
-          }
-          &-labelD {
-            color: #ccc;
-            text-decoration: line-through;
-          }
           .file-icon {
             margin-right: 4px;
+            display: flex;
+            align-items: center;
           }
           &-dot {
             width: 8px;
@@ -112,6 +104,7 @@
       width: 100%;
       color: #ddd;
       padding-left: 16px;
+      box-sizing: border-box;
       &-dir {
         display: flex;
         height: 22px;

@@ -26,10 +26,9 @@ export interface MonacoProps {
 export default ({
   value = '',
   onChange = () => {},
-  onSave = () => {},
   language = 'javascript',
   theme = 'vs-dark',
-  id = 'monaco-container',
+  id = 'ide-editor',
   editorMonacoRef = useRef<any>({}),
   options = {},
   ...rest
@@ -51,14 +50,6 @@ export default ({
         ...options,
         ...rest,
       });
-    // ctrl + s 执行 onSave
-    monacoInstance.addCommand(
-      monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS,
-      () => {
-        const code = monacoInstance.getValue();
-        onSave(code);
-      },
-    );
     // onChange
     monacoInstance.onDidChangeModelContent((e) => {
       const code = monacoInstance.getValue();
@@ -67,6 +58,10 @@ export default ({
       }
     });
     editorMonacoRef.current = monacoInstance; // 挂到ref
+    window[id] = monacoInstance; // 挂在到 window
+    return () => {
+      delete window[id];
+    };
   }, []);
   // update
   useEffect(() => {
@@ -74,5 +69,5 @@ export default ({
       editorMonacoRef.current.setValue?.(value);
     }
   }, [value]);
-  return <div id={id} className="app-monaco-editor" />;
+  return <div id={id} className="app-ide-editor" />;
 };

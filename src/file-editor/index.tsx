@@ -1,6 +1,10 @@
 import { FileEditorMainProps } from './types';
 import Tabs from './components/tabs';
 import Main from './components/main';
+import CreateSpin from '@/compontent/create-spin';
+import { cloneDeep } from 'lodash';
+import { useEffect, useState } from 'react';
+import { FileProps } from '@/file-explorer/types';
 import './index.less';
 
 const defaultExtra = [
@@ -17,68 +21,97 @@ const defaultExtra = [
 ];
 const prefixCls = 'ide-editor-file-editor';
 
+const spin = CreateSpin({
+  getContainer: () => document.querySelector(`.${prefixCls}`),
+  text: '保存中...',
+});
+
 export default ({
   files,
   selectedKey,
+  style = {},
   extra = [],
-  onExtraClick,
-  onClick,
-  onClose,
-  onChange,
-  onSave,
-  extraExpansionRender,
+  onExtraClick = () => {},
+  onClick = () => {},
+  onClose = () => {},
+  onChange = () => {},
+  onSave = (code) => {},
+  extraExpansionRender = () => [],
   editorExpansionRender = (file, dom) => {
     return dom;
   },
 }: FileEditorMainProps) => {
+  const [_selectedKey, setSelectedKey] = useState<string>(selectedKey);
+  const [innerFiles, setInnerFiles] = useState<FileProps[]>([]);
+  useEffect(() => {
+    setInnerFiles(cloneDeep(files)); // 剔除引用关系
+  }, [files]);
+  // Ctrl + S
+  const keyboardEvent = async (e) => {
+    if (
+      (e.key === 's' || e.key === 'S') &&
+      (navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey)
+    ) {
+      e.preventDefault();
+      spin.open();
+      await onSave(window[`ide-editor-${_selectedKey}`]?.getValue());
+      spin.close();
+    }
+  };
+  useEffect(() => {
+    window.addEventListener('keydown', keyboardEvent);
+    return () => {
+      window.removeEventListener('keydown', keyboardEvent);
+    };
+  }, [_selectedKey]);
   return (
-    <div className={`${prefixCls} show-file-icons`}>
-      {files.length > 0 ? (
+    <div style={style} className={`${prefixCls} show-file-icons`}>
+      {innerFiles.length > 0 ? (
         <>
           <Tabs
-            files={files}
+            files={innerFiles}
             extraExpansionRender={extraExpansionRender}
-            selectedKey={selectedKey}
-            onClick={onClick}
-            onClose={onClose}
+            selectedKey={_selectedKey}
+            onClick={(file) => {
+              setSelectedKey(file.path);
+              onClick(file);
+            }}
+            onClose={(file, index) => {
+              innerFiles.splice(index, 1);
+              setInnerFiles([...innerFiles]);
+              setSelectedKey(innerFiles[0]?.path);
+              onClose(file);
+            }}
             extra={[...extra, ...defaultExtra]}
             onExtraClick={onExtraClick}
           />
-          {files.map((file) => {
+          {innerFiles.map((file) => {
             return (
               <div
                 key={file.path}
                 style={{
                   width: '100%',
                   height: '100%',
-                  display: file.path === selectedKey ? 'block' : 'none',
+                  display: file.path === _selectedKey ? 'block' : 'none',
                 }}
               >
                 {editorExpansionRender(
                   file,
                   <div className="ide-editor-file-editor-body">
                     <Main
-                      id={`monaco-container-${file.path}`}
-                      mode={file.stageId !== undefined ? 'diff' : 'nomal'}
+                      id={`ide-editor-${file.path}`}
+                      mode="nomal"
                       options={{
-                        readOnly: file.path.endsWith('.designer.json'),
-                        language:
-                          file.path.endsWith('.designer') ||
-                          file.path.endsWith('.json')
-                            ? 'json'
-                            : 'javascript',
+                        language: {
+                          '.json': 'json',
+                          '.js': 'javascript',
+                          '.ts': 'javascript',
+                          '.tsx': 'javascript',
+                        }[file.extension],
                       }}
                       value={file.content}
-                      originalValue={file.stageContent}
                       onChange={(code) => {
                         onChange?.(code);
-                      }}
-                      onSave={async (code) => {
-                        try {
-                          await onSave?.(code);
-                        } catch (error) {
-                          throw Error(error);
-                        }
                       }}
                     />
                   </div>,

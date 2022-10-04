@@ -1,12 +1,8 @@
 import { iconMapping } from '@/file-explorer/icon-mapping';
+import { FileProps } from '@/file-explorer/types';
 import { FileEditorProps } from '../types';
 
 const prefix = 'ide-editor-file-editor-header';
-
-const StageMapping = {
-  M: ' (Working Tree)',
-  U: ' (Unstracked)',
-};
 
 export default ({
   files = [],
@@ -17,10 +13,12 @@ export default ({
   extra,
   extraExpansionRender,
 }: FileEditorProps) => {
-  const currentFile = files.find((file) => file.path === selectedKey) || {
-    extension: '',
-    name: '',
-  };
+  const currentFile: FileProps = files.find(
+    (file) => file.path === selectedKey,
+  );
+  if (currentFile === undefined) {
+    return null;
+  }
   let dir = selectedKey.split('/');
   dir = dir.slice(0, dir.length - 1).filter((i) => i);
   // 扩展icon
@@ -31,7 +29,7 @@ export default ({
     <div className="ide-editor-file-editor-header">
       <div className={`${prefix}-tabs`}>
         <div className={`${prefix}-tabs-left`}>
-          {files.map((tab) => {
+          {files.map((tab, index) => {
             return (
               <div
                 key={tab.path}
@@ -41,16 +39,12 @@ export default ({
                     : `${prefix}-tabs-left-item`
                 }
                 onClick={() => {
-                  onClick(tab.path);
+                  onClick(tab);
                 }}
               >
                 <i className={`file-icon ${iconMapping[tab.extension]}`} />
-                <span
-                  className={`${prefix}-tabs-left-item-label${tab.gitStatus}`}
-                >
+                <span className={`${prefix}-tabs-left-item-label`}>
                   {tab.name}
-                  {tab.stageId !== undefined && StageMapping[tab.gitStatus]}
-                  &nbsp;&nbsp;{tab.gitStatus}
                 </span>
                 {tab.notSave && (
                   <div className={`${prefix}-tabs-left-item-dot`} />
@@ -60,13 +54,12 @@ export default ({
                   onClick={(e) => {
                     e.stopPropagation();
                     if (tab.notSave) {
-                      // eslint-disable-next-line no-alert
                       const result = confirm('当前文件未保存，是否确认关闭?');
                       if (result) {
-                        onClose(tab);
+                        onClose(tab, index);
                       }
                     } else {
-                      onClose(tab);
+                      onClose(tab, index);
                     }
                   }}
                 >

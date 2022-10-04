@@ -1,19 +1,16 @@
-/* eslint-disable react/jsx-no-bind */
-import { useState } from 'react';
 import MonacoEditor from '@/ide-editor';
 import MonacoEditorDiff from '@/ide-editor/diff';
-import WebTerminal from '@/web-terminal';
+import { useRef } from 'react';
 
 export default ({
   mode,
   originalValue = '',
   id,
   value = '',
-  onSave,
   onChange,
+  editorMonacoRef = useRef({}),
   options,
 }) => {
-  const [errorInfo, setErrorInfo]: any = useState(false);
   return (
     <>
       {mode === 'diff' ? (
@@ -28,22 +25,9 @@ export default ({
           id={id}
           value={value}
           onChange={onChange}
-          onSave={async (code) => {
-            try {
-              await onSave?.(code);
-              setErrorInfo(false);
-            } catch (error) {
-              setErrorInfo(String(error));
-            }
-          }}
+          editorMonacoRef={editorMonacoRef}
           {...options}
         />
-      )}
-      {errorInfo && (
-        <WebTerminal onClose={setErrorInfo.bind(null, false)}>
-          <pre>解析失败:</pre>
-          <pre>{errorInfo}</pre>
-        </WebTerminal>
       )}
     </>
   );
