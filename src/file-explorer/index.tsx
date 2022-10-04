@@ -22,7 +22,7 @@ export default ({
   projectName = 'EXPLORER',
   header = true,
   onRefresh,
-  onCreateFile = () => {},
+  onCreateFile = async () => true,
   explorerRef,
 }: FileExplorerProps) => {
   const editFileRef = useRef<FileProps>();
