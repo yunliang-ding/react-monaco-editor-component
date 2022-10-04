@@ -61,3 +61,7 @@ export default () => {
   );
 };
 ```
+
+## API
+
+<API src="../../src/file-editor/index.tsx" hideTitle></API>

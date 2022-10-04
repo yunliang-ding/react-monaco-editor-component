@@ -22,7 +22,7 @@ export interface FileProps {
 }
 
 export interface FileExplorerProps {
-  /** */
+  /** 获取 ref 实例*/
   explorerRef?: MutableRefObject<explorerRefInstance>;
   /** 主容器样式 */
   style?: CSSProperties;
@@ -30,9 +30,9 @@ export interface FileExplorerProps {
   onOpenFileChange?: (files: FileProps[]) => void;
   /** 文件点击 */
   onClick?: (file: FileProps) => void;
-  /** */
-  onCreateFile?: (file: FileProps) => void;
-  /** */
+  /** 创建文件或者文件夹 */
+  onCreateFile?: (file: FileProps) => Promise<boolean>;
+  /** 刷新文件 */
   onRefresh?: () => void;
   /** 项目名称 */
   projectName?: string;
