@@ -1,0 +1,6 @@
+#npmignore
+!/dist
+/src
+/docs
+/mock
+/.dumi
