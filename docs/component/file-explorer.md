@@ -26,19 +26,21 @@ export default () => {
     <FileExplorer
       projectName="react-web-ied-compontent"
       explorerRef={explorerRef}
-      style={{ width: 260, height: 500 }}
+      style={{ width: 260, height: '100vh' }}
       onRefresh={init}
       onClick={(file) => {
         console.log('onClick', file);
       }}
       onCreateFile={async (file) => {
-        await new Promise((res) => setTimeout(res, 1000));
+        await new Promise((res) => setTimeout(res, 2000));
         console.log(file);
       }}
-      onRename={(file) => {
+      onRenameFile={async (file) => {
+        await new Promise((res) => setTimeout(res, 2000));
         console.log(file);
       }}
-      onRemove={(file) => {
+      onDeleteFile={async (file) => {
+        await new Promise((res) => setTimeout(res, 2000));
         console.log(file);
       }}
     />

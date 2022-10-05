@@ -25,7 +25,6 @@ export const uuid = (size: number) => {
 
 /** 获取制定路径的文件 */
 export const getFileByPath = (path: string, files: FileProps[], custom?) => {
-  console.log('getFileByPath', path, files);
   const currentFile = {
     file: undefined,
   };

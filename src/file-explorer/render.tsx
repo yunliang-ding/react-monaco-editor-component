@@ -17,27 +17,36 @@ export const iconRender = (file) => {
   ) : (
     <i
       className={`file-icon ${
-        file.status === 'new' ? '' : iconMapping[file.extension]
+        file.status === 'edit' ? '' : iconMapping[file.extension]
       }`}
     />
   );
 };
 /** label渲染 */
-export const labelRender = (file, onAddDone, prefixCls) => {
-  return file.status === 'new' ? (
+export const labelRender = (file, onAddDone, renameFileDone, prefixCls) => {
+  return file.status === 'edit' ? (
     <input
       onBlur={(e) => {
-        onAddDone(e.target.value);
+        if (file.name) {
+          renameFileDone(e.target.value, file.name);
+        } else {
+          onAddDone(e.target.value);
+        }
       }}
       onKeyDown={(e: any) => {
         if (e.key === 'Enter') {
-          onAddDone(e.target.value);
+          if (file.name) {
+            renameFileDone(e.target.value, file.name);
+          } else {
+            onAddDone(e.target.value);
+          }
         }
       }}
       onClick={(e) => {
         e.stopPropagation();
       }}
       autoFocus
+      defaultValue={file.name}
       style={{
         background: '#333',
         border: 'none',
@@ -50,17 +59,6 @@ export const labelRender = (file, onAddDone, prefixCls) => {
     <span className={`${prefixCls}-label`}>{file.name}</span>
   );
 };
-/** gitStatusRender */
-export const gitStatusRender = (file, prefixCls) => {
-  return (
-    file.gitStatus &&
-    (file.type === 'directory' ? (
-      <span className={`${prefixCls}-status-dot`} />
-    ) : (
-      <span className={`${prefixCls}-status`}>{file.gitStatus}</span>
-    ))
-  );
-};
 /** 渲染结构树 */
 export const RenderFileTree = ({
   selectedKey,
@@ -69,6 +67,8 @@ export const RenderFileTree = ({
   prefixCls,
   onFileClick,
   onAddDone,
+  renameFileDone,
+  onContextMenu,
 }) => {
   return (
     <Fragment>
@@ -88,21 +88,25 @@ export const RenderFileTree = ({
               title={file.path}
               style={innerStyle}
               className={className}
+              onContextMenu={(e) => {
+                onContextMenu(e, file);
+              }}
               onClick={() => {
                 onFileClick(file);
               }}
             >
               {iconRender(file)}
-              {labelRender(file, onAddDone, itemPrefixCls)}
-              {gitStatusRender(file, itemPrefixCls)}
+              {labelRender(file, onAddDone, renameFileDone, itemPrefixCls)}
             </div>
             {file.status === 'expanded' && (
               <RenderFileTree
+                onContextMenu={onContextMenu}
                 dataSource={file.children}
                 selectedKey={selectedKey}
                 prefixCls={prefixCls}
                 onFileClick={onFileClick}
                 onAddDone={onAddDone}
+                renameFileDone={renameFileDone}
                 tabsPadding={padding}
               />
             )}

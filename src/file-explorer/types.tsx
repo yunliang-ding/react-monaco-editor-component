@@ -12,7 +12,7 @@ export interface FileProps {
   /** 文件大小 */
   size?: number;
   /** 文件状态 */
-  status?: 'new' | 'nomal' | 'open' | 'expanded';
+  status?: 'edit' | 'nomal' | 'open' | 'expanded';
   /** 文件是否未保存 */
   notSave?: boolean;
   /** 文件子节点 */
@@ -32,6 +32,10 @@ export interface FileExplorerProps {
   onClick?: (file: FileProps) => void;
   /** 创建文件或者文件夹 */
   onCreateFile?: (file: FileProps) => Promise<boolean>;
+  /** 重命名文件 */
+  onRenameFile?: (file: FileProps) => Promise<boolean>;
+  /** 删除文件 */
+  onDeleteFile?: (file: FileProps) => Promise<boolean>;
   /** 刷新文件 */
   onRefresh?: () => void;
   /** 项目名称 */

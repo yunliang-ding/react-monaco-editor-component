@@ -35,8 +35,8 @@ const CreateSpin = ({ getContainer, ...props }: CreateSpinProps) => {
 
 export default (options: CreateSpinProps) => {
   return {
-    open: () => {
-      CreateSpin(options);
+    open: (config = {}) => {
+      CreateSpin({ ...options, ...config });
     },
     close,
   };
