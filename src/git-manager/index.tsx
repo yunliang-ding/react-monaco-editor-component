@@ -67,6 +67,7 @@ export default ({
       <div className={`${prefixCls}-body`}>
         <FileExplorer
           explorerRef={explorerRef}
+          spinWapper={spin}
           header={false}
           style={{
             width: '100%',

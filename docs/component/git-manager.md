@@ -14,7 +14,9 @@ export default () => {
   const explorerRef = React.useRef({});
   /** 请求数据 */
   const init = async () => {
-    explorerRef.current.openSpin();
+    explorerRef.current.openSpin({
+      text: '加载中...',
+    });
     // 模拟接口
     await new Promise((res) => setTimeout(res, 1000));
     explorerRef.current.setFiles([

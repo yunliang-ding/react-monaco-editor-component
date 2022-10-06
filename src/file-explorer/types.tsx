@@ -44,6 +44,7 @@ export interface FileExplorerProps {
   header?: boolean;
   /** 右键菜单配置 */
   menus?: any[] | boolean;
+  spinWapper?: any;
 }
 
 export interface explorerRefInstance {

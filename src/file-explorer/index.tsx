@@ -12,7 +12,7 @@ import './index.less';
 
 const prefixCls = 'ide-component-file-explorer';
 
-const spin = CreateSpin({
+const explorerSpin = CreateSpin({
   getContainer: () => document.querySelector(`.${prefixCls}`),
   text: '加载中...',
 });
@@ -34,6 +34,7 @@ export default ({
   onDeleteFile = sleep,
   explorerRef,
   menus,
+  spinWapper = explorerSpin,
 }: FileExplorerProps) => {
   const { show } = useContextMenu({
     id: MENU_ID,
@@ -81,8 +82,8 @@ export default ({
   const [selectedKey, setSelected] = useState<string>();
   // 扩展 api
   useEffect(() => {
-    explorerRef.current.openSpin = spin.open;
-    explorerRef.current.closeSpin = spin.close;
+    explorerRef.current.openSpin = spinWapper.open;
+    explorerRef.current.closeSpin = spinWapper.close;
     explorerRef.current.setSelectedKey = setSelected;
     explorerRef.current.setFiles = (files) => {
       setFiles(cloneDeep(files)); // 剔除引用关系
