@@ -44,6 +44,16 @@ export default () => {
       selectedKey={files[0].path}
       editorMonacoRef={editorMonacoRef}
       style={{ width: '100%', height: 500 }}
+      extra={[
+        {
+          key: 'preview',
+          icon: 'codicon codicon-open-preview',
+          title: '预览',
+          onClick(file) {
+            console.log(file);
+          },
+        },
+      ]}
       onClose={(file) => {
         console.log('onClose', file);
       }}

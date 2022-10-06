@@ -31,7 +31,6 @@ export default ({
   selectedKey,
   style = {},
   extra = [],
-  onExtraClick = () => {},
   onClick = () => {},
   onClose = () => {},
   onChange = () => {},
@@ -83,7 +82,6 @@ export default ({
               onClose(file);
             }}
             extra={[...extra, ...defaultExtra]}
-            onExtraClick={onExtraClick}
           />
           {innerFiles.map((file) => {
             return (
@@ -100,7 +98,6 @@ export default ({
                   <div className="ide-editor-file-editor-body">
                     <Main
                       id={`ide-editor-${file.path}`}
-                      mode="nomal"
                       options={{
                         language: {
                           '.json': 'json',

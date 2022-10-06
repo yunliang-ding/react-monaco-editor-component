@@ -7,7 +7,6 @@ const prefix = 'ide-editor-file-editor-header';
 export default ({
   files = [],
   selectedKey,
-  onExtraClick,
   onClick,
   onClose,
   extra,
@@ -78,7 +77,7 @@ export default ({
                   title={item.title}
                   key={item.key}
                   onClick={() => {
-                    onExtraClick(item.key, currentFile);
+                    item.onClick(currentFile);
                   }}
                 />
               );

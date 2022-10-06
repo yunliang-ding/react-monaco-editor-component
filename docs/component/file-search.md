@@ -51,3 +51,7 @@ export default () => {
   );
 };
 ```
+
+## API
+
+<API src="../../src/file-search/index.tsx" hideTitle></API>

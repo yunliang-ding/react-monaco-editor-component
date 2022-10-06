@@ -58,3 +58,7 @@ export default () => {
   );
 };
 ```
+
+## API
+
+<API src="../../src/git-manager/index.tsx" hideTitle></API>

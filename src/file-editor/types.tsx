@@ -14,8 +14,8 @@ export interface FileEditorProps {
     key: string;
     icon: string;
     title: string;
+    onClick?: (file: FileProps) => void;
   }[];
-  onExtraClick?: any;
 }
 
 export interface FileEditorMainProps extends FileEditorProps {
