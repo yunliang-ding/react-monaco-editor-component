@@ -1,54 +1,49 @@
 /* eslint-disable no-bitwise */
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import { useEffect, useRef, CSSProperties } from 'react';
+import { editor } from 'monaco-editor/esm/vs/editor/editor.api';
+import { useEffect, useRef, CSSProperties, MutableRefObject } from 'react';
 import './index.less';
 
+const defaultOptions: editor.IStandaloneEditorConstructionOptions = {
+  value: '',
+  language: 'javascript',
+  theme: 'vs-dark',
+  selectOnLineNumbers: true,
+  automaticLayout: true,
+  tabSize: 2,
+  fontSize: 14,
+  fontFamily: 'monaco',
+  minimap: {
+    enabled: true,
+  },
+};
+
 export interface MonacoProps {
-  language?: string;
   value: string;
-  originalValue?: string;
-  theme?: 'vs-dark' | 'vs';
+  id?: string;
   style?: CSSProperties;
   onChange?: Function;
-  onSave?: Function;
-  reload?: any;
-  options?: any;
-  className?: string;
-  onMount?: Function;
-  editorMonacoRef?: any;
-  id?: string;
-  mode?: 'nomal' | 'diff';
-  renderSideBySide?: boolean;
+  monacoOptions?: editor.IStandaloneEditorConstructionOptions;
+  editorMonacoRef?: MutableRefObject<monaco.editor.IStandaloneCodeEditor>;
 }
-/**
- * 编辑器
- */
 export default ({
-  value = '',
-  onChange = () => {},
-  language = 'javascript',
-  theme = 'vs-dark',
   id = 'ide-editor',
-  editorMonacoRef = useRef<any>({}),
-  options = {},
-  ...rest
+  style = {},
+  onChange = () => {},
+  editorMonacoRef = useRef<monaco.editor.IStandaloneCodeEditor>(),
+  monacoOptions = {},
+  value = '',
 }: MonacoProps) => {
   useEffect(() => {
     const monacoInstance: monaco.editor.IStandaloneCodeEditor =
       monaco.editor.create(document.getElementById(id), {
-        value,
-        language,
-        selectOnLineNumbers: true,
-        automaticLayout: true,
-        tabSize: 2,
-        fontSize: 14,
-        theme,
-        fontWeight: '400',
-        minimap: {
-          enabled: true,
-        },
-        ...options,
-        ...rest,
+        ...Object.assign(
+          {
+            value,
+          },
+          defaultOptions,
+          monacoOptions,
+        ),
       });
     // onChange
     monacoInstance.onDidChangeModelContent((e) => {
@@ -63,11 +58,10 @@ export default ({
       delete window[id];
     };
   }, []);
-  // update
   useEffect(() => {
     if (editorMonacoRef.current) {
       editorMonacoRef.current.setValue?.(value);
     }
   }, [value]);
-  return <div id={id} className="app-ide-editor" />;
+  return <div style={style} id={id} className="app-ide-editor" />;
 };

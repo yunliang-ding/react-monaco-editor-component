@@ -1,37 +1,48 @@
 /* eslint-disable no-bitwise */
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import { editor } from 'monaco-editor/esm/vs/editor/editor.api';
 import { useEffect } from 'react';
 import './index.less';
 
 export interface MonacoDiffProps {
-  language?: string;
+  id?: string;
   value: string;
   originalValue?: string;
-  theme?: 'vs-dark' | 'vs';
-  renderSideBySide?: boolean;
-  id?: string;
+  language?: string;
+  monacoOptions?: editor.IStandaloneDiffEditorConstructionOptions;
 }
-/**
- * 编辑器
- */
+
+const defaultOptions: editor.IStandaloneDiffEditorConstructionOptions = {
+  theme: 'vs-dark',
+  selectOnLineNumbers: true,
+  automaticLayout: true,
+  fontFamily: 'monaco',
+  readOnly: true,
+  renderSideBySide: true,
+  fontSize: 14,
+  minimap: {
+    enabled: false,
+  },
+};
+
 export default ({
   id = 'monaco-container-diff',
   value = '',
-  originalValue = '',
   language = 'javascript',
-  theme = 'vs-dark',
-  renderSideBySide = true,
+  originalValue = '',
+  monacoOptions = {},
 }: MonacoDiffProps) => {
   useEffect(() => {
     const diffEditor: monaco.editor.IStandaloneDiffEditor =
       monaco.editor.createDiffEditor(document.getElementById(id), {
-        readOnly: true,
-        theme,
-        renderSideBySide,
-        fontSize: 14,
-        minimap: {
-          enabled: false,
-        },
+        ...Object.assign(
+          {
+            value,
+            originalValue,
+          },
+          defaultOptions,
+          monacoOptions,
+        ),
       });
     const originalModel = monaco.editor.createModel(originalValue, language);
     const modifiedModal = monaco.editor.createModel(value, language);

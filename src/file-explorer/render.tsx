@@ -17,7 +17,9 @@ export const iconRender = (file) => {
   ) : (
     <i
       className={`file-icon ${
-        file.status === 'edit' ? '' : iconMapping[file.extension]
+        file.status === 'edit'
+          ? iconMapping[file.extension] || ''
+          : iconMapping[file.extension]
       }`}
     />
   );
