@@ -171,7 +171,7 @@ export default ({
     editFileRef.current.status = 'nomal';
     // 等待外面确认
     try {
-      spin.open({
+      explorerSpin.open({
         text: '创建中...',
       });
       await onCreateFile(editFileRef.current);
@@ -179,7 +179,7 @@ export default ({
     } catch (error) {
       console.log(error);
     } finally {
-      spin.close();
+      explorerSpin.close();
     }
   };
   // 重命名文件
@@ -205,7 +205,7 @@ export default ({
     ].join('/');
     // 等待外面确认
     try {
-      spin.open({
+      explorerSpin.open({
         text: '重命名中...',
       });
       await onRenameFile(editFileRef.current);
@@ -213,7 +213,7 @@ export default ({
     } catch (error) {
       console.log(error);
     } finally {
-      spin.close();
+      explorerSpin.close();
     }
   };
   // 删除指定的文件
@@ -231,7 +231,7 @@ export default ({
     root.splice(index, 1);
     if (isCheck) {
       try {
-        spin.open({
+        explorerSpin.open({
           text: '删除中...',
         });
         // 等待外面确认
@@ -240,7 +240,7 @@ export default ({
       } catch (error) {
         console.log(error);
       } finally {
-        spin.close();
+        explorerSpin.close();
       }
     } else {
       setFiles([...files]);
