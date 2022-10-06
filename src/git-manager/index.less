@@ -2,6 +2,7 @@
   width: 100%;
   height: 100%;
   background-color: #252526;
+  position: relative;
   &-commit {
     height: 40px;
     display: flex;
@@ -17,6 +18,9 @@
       width: 100%;
       margin: 0 12px;
     }
+  }
+  &-body {
+    height: calc(~'100% - 75px');
   }
   .ide-component-file-explorer-body-itemM,
   .ide-component-file-explorer-body-itemU {

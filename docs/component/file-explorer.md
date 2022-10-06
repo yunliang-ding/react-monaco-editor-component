@@ -26,7 +26,7 @@ export default () => {
     <FileExplorer
       projectName="react-web-ied-compontent"
       explorerRef={explorerRef}
-      style={{ width: 260, height: '100vh' }}
+      style={{ width: 260, height: 400 }}
       onRefresh={init}
       onClick={(file) => {
         console.log('onClick', file);

@@ -19,7 +19,8 @@ const spin = CreateSpin({
 
 const MENU_ID = 'justTest';
 
-const sleep: any = async () => new Promise((res) => setTimeout(res, 1000));
+export const sleep: any = async () =>
+  new Promise((res) => setTimeout(res, 1000));
 
 export default ({
   style = {},
@@ -32,6 +33,7 @@ export default ({
   onRenameFile = sleep,
   onDeleteFile = sleep,
   explorerRef,
+  menus,
 }: FileExplorerProps) => {
   const { show } = useContextMenu({
     id: MENU_ID,
@@ -42,6 +44,38 @@ export default ({
       props: file,
     });
   };
+  const contexifyMenus = menus || [
+    {
+      key: 'new folder',
+      label: 'New Folder',
+      hidden: ({ props }) => props.type === 'file',
+      onClick({ props }) {
+        createFile(props, 'directory');
+      },
+    },
+    {
+      key: 'new file',
+      label: 'New File',
+      hidden: ({ props }) => props.type === 'file',
+      onClick({ props }) {
+        createFile(props, 'file');
+      },
+    },
+    {
+      key: 'rename',
+      label: 'Rename',
+      onClick({ props }) {
+        renameFile(props);
+      },
+    },
+    {
+      key: 'delete',
+      label: 'Delete',
+      onClick({ props }) {
+        deleteFile(props);
+      },
+    },
+  ];
   const editFileRef = useRef<FileProps>();
   const [files, setFiles] = useState<FileProps[]>();
   const [selectedKey, setSelected] = useState<string>();
@@ -262,11 +296,7 @@ export default ({
           renameFileDone={renameFileDone}
         />
       </div>
-      <Contexify
-        createFile={createFile}
-        renameFile={renameFile}
-        deleteFile={deleteFile}
-      />
+      {menus !== false && <Contexify menus={contexifyMenus} />}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { GitManageProps } from './types';
-import FileExplorer from '../file-explorer';
+import FileExplorer, { sleep } from '../file-explorer';
 import Header from '@/compontent/header';
 import CreateSpin from '@/compontent/create-spin';
 import { useRef } from 'react';
@@ -15,18 +15,19 @@ const spin = CreateSpin({
 });
 
 export default ({
-  diff,
-  onCommit,
-  onPush,
-  onPull,
+  style = {},
   onRefresh,
-  onReset,
+  explorerRef = useRef<any>({}),
+  onClick,
   onOpenFileChange,
-  onSelected,
+  onCommit = sleep,
+  onPush = sleep,
+  onPull = sleep,
+  onReset = sleep,
 }: GitManageProps) => {
   const messageRef: any = useRef();
   return (
-    <div className={prefixCls}>
+    <div className={prefixCls} style={style}>
       <Header
         title="SOURCE CONTROL"
         actions={[
@@ -37,7 +38,9 @@ export default ({
               try {
                 const message = messageRef.current.value;
                 if (!isEmpty(message)) {
-                  spin.open();
+                  spin.open({
+                    text: '提交中...',
+                  });
                   await onCommit(message);
                 }
               } catch (error) {
@@ -63,12 +66,31 @@ export default ({
       </div>
       <div className={`${prefixCls}-body`}>
         <FileExplorer
-          // files={diff}
+          explorerRef={explorerRef}
           header={false}
+          style={{
+            width: '100%',
+            height: '100%',
+          }}
           onOpenFileChange={onOpenFileChange}
-          // onSelected={onSelected}
-          onRefresh={() => {}}
-          onClick={() => {}}
+          onRefresh={onRefresh}
+          onClick={onClick}
+          menus={[
+            {
+              key: 'disCard',
+              label: 'DisCard Change',
+              onClick({ props }) {
+                console.log(props);
+              },
+            },
+            {
+              key: 'stage',
+              label: 'Stage Change',
+              onClick({ props }) {
+                console.log(props);
+              },
+            },
+          ]}
         />
       </div>
     </div>

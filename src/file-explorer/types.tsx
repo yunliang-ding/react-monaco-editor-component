@@ -42,6 +42,8 @@ export interface FileExplorerProps {
   projectName?: string;
   /** 是否展示头部 */
   header?: boolean;
+  /** 右键菜单配置 */
+  menus?: any[] | boolean;
 }
 
 export interface explorerRefInstance {

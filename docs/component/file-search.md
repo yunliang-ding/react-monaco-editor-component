@@ -1,6 +1,6 @@
 ---
-order: 5
-title: GitManager 源码管理
+order: 4
+title: FileSearch 文件查找
 toc: menu
 ---
 
@@ -8,7 +8,7 @@ toc: menu
 
 ```tsx
 import React from 'react';
-import { GitManager } from 'react-web-ide-component';
+import { FileSearch } from 'react-web-ide-component';
 
 export default () => {
   const explorerRef = React.useRef({});
@@ -45,12 +45,16 @@ export default () => {
   };
   React.useEffect(init, []);
   return (
-    <GitManager
+    <FileSearch
       style={{ width: 260, height: 400 }}
       explorerRef={explorerRef}
       onRefresh={init}
       onClick={(file) => {
         console.log('onClick', file);
+      }}
+      onSearch={async (keyword) => {
+        await new Promise((res) => setTimeout(res, 1000));
+        console.log(keyword);
       }}
     />
   );
