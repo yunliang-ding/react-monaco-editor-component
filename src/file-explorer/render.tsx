@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 import { Fragment } from 'react';
-import { iconMapping } from './icon-mapping';
+import { iconMapping } from '@/icon-mapping';
 
 const initialPadding = 8;
 
@@ -55,6 +55,7 @@ export const labelRender = (file, onAddDone, renameFileDone, prefixCls) => {
         width: '100%',
         outline: '1px solid #1890ff',
         color: '#fff',
+        fontFamily: 'monaco',
       }}
     />
   ) : (

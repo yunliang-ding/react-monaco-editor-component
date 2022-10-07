@@ -1,4 +1,4 @@
-import { iconMapping } from '@/file-explorer/icon-mapping';
+import { iconMapping } from '@/icon-mapping';
 import { FileProps } from '@/file-explorer/types';
 import { FileEditorProps } from '../types';
 

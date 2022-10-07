@@ -10,13 +10,13 @@ export default ({
   originalValue = '',
   onChange,
   editorMonacoRef = useRef(),
-  options,
+  monacoOptions,
 }: {
   id?: string;
   onChange?: any;
   mode?: 'diff' | undefined;
   editorMonacoRef?: MutableRefObject<editor.IStandaloneCodeEditor>;
-  options: editor.IStandaloneEditorConstructionOptions;
+  monacoOptions: editor.IStandaloneEditorConstructionOptions;
   originalValue?: string;
   value?: string;
 }) => {
@@ -27,12 +27,12 @@ export default ({
           id={id}
           value={value}
           originalValue={originalValue}
-          monacoOptions={options}
+          monacoOptions={monacoOptions}
         />
       ) : (
         <MonacoEditor
           id={id}
-          monacoOptions={options}
+          monacoOptions={monacoOptions}
           value={value}
           onChange={onChange}
           editorMonacoRef={editorMonacoRef}

@@ -1,4 +1,4 @@
-import { FileEditorMainProps } from './types';
+import { FileEditorProps } from './types';
 import HeaderTabs from './components/tabs';
 import Main from './components/main';
 import CreateSpin from '@/compontent/create-spin';
@@ -36,10 +36,11 @@ export default ({
   onChange = () => {},
   onSave = (code) => {},
   editorMonacoRef,
+  monacoOptions,
   editorRef = useRef({
     addTab: {},
   } as any),
-}: FileEditorMainProps) => {
+}: FileEditorProps) => {
   const [_selectedKey, setSelectedKey] = useState<string>(selectedKey);
   const [innerFiles, setInnerFiles] = useState<FileProps[]>([]);
   useEffect(() => {
@@ -117,13 +118,14 @@ export default ({
                     <Main
                       id={`ide-editor-${file.path}`}
                       editorMonacoRef={editorMonacoRef}
-                      options={{
+                      monacoOptions={{
                         language: {
                           '.json': 'json',
                           '.js': 'javascript',
                           '.ts': 'javascript',
                           '.tsx': 'javascript',
                         }[file.extension],
+                        ...monacoOptions,
                       }}
                       value={file.content}
                       onChange={(code) => {
