@@ -1,6 +1,6 @@
 {
   "name": "react-web-ide-component",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "基于 React 实现一套 webIDE 相关组件",
   "author": "yunliang-ding",
   "homepage": "https://yunliang-ding.github.io/react-web-ide-component",

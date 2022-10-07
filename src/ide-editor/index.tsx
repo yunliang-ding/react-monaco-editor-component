@@ -1,6 +1,6 @@
 /* eslint-disable no-bitwise */
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import { editor } from 'monaco-editor/esm/vs/editor/editor.api';
+import { editor } from 'monaco-editor';
 import { useEffect, useRef, CSSProperties, MutableRefObject } from 'react';
 import './index.less';
 

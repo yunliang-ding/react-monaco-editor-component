@@ -3,7 +3,7 @@ import Tabs from './components/tabs';
 import Main from './components/main';
 import CreateSpin from '@/compontent/create-spin';
 import { cloneDeep } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FileProps } from '@/file-explorer/types';
 import './index.less';
 
@@ -35,10 +35,10 @@ export default ({
   onClose = () => {},
   onChange = () => {},
   onSave = (code) => {},
-  extraExpansionRender = () => [],
-  editorExpansionRender = (file, dom) => {
-    return dom;
-  },
+  editorMonacoRef,
+  editorRef = useRef({
+    addTab: {},
+  } as any),
 }: FileEditorMainProps) => {
   const [_selectedKey, setSelectedKey] = useState<string>(selectedKey);
   const [innerFiles, setInnerFiles] = useState<FileProps[]>([]);
@@ -63,13 +63,16 @@ export default ({
       window.removeEventListener('keydown', keyboardEvent);
     };
   }, [_selectedKey]);
+  useEffect(() => {
+    // editorRef.current.addTab = (tab) => {
+    // }
+  }, []);
   return (
     <div style={style} className={`${prefixCls} show-file-icons`}>
       {innerFiles.length > 0 ? (
         <>
           <Tabs
             files={innerFiles}
-            extraExpansionRender={extraExpansionRender}
             selectedKey={_selectedKey}
             onClick={(file) => {
               setSelectedKey(file.path);
@@ -93,26 +96,24 @@ export default ({
                   display: file.path === _selectedKey ? 'block' : 'none',
                 }}
               >
-                {editorExpansionRender(
-                  file,
-                  <div className="ide-editor-file-editor-body">
-                    <Main
-                      id={`ide-editor-${file.path}`}
-                      options={{
-                        language: {
-                          '.json': 'json',
-                          '.js': 'javascript',
-                          '.ts': 'javascript',
-                          '.tsx': 'javascript',
-                        }[file.extension],
-                      }}
-                      value={file.content}
-                      onChange={(code) => {
-                        onChange?.(code);
-                      }}
-                    />
-                  </div>,
-                )}
+                <div className="ide-editor-file-editor-body">
+                  <Main
+                    id={`ide-editor-${file.path}`}
+                    editorMonacoRef={editorMonacoRef}
+                    options={{
+                      language: {
+                        '.json': 'json',
+                        '.js': 'javascript',
+                        '.ts': 'javascript',
+                        '.tsx': 'javascript',
+                      }[file.extension],
+                    }}
+                    value={file.content}
+                    onChange={(code) => {
+                      onChange?.(code);
+                    }}
+                  />
+                </div>
               </div>
             );
           })}

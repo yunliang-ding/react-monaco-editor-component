@@ -10,7 +10,6 @@ export default ({
   onClick,
   onClose,
   extra,
-  extraExpansionRender,
 }: FileEditorProps) => {
   const currentFile: FileProps = files.find(
     (file) => file.path === selectedKey,
@@ -20,10 +19,6 @@ export default ({
   }
   let dir = selectedKey.split('/');
   dir = dir.slice(0, dir.length - 1).filter((i) => i);
-  // 扩展icon
-  if (typeof extraExpansionRender === 'function') {
-    extra = [...extraExpansionRender(currentFile), ...extra];
-  }
   return (
     <div className="ide-editor-file-editor-header">
       <div className={`${prefix}-tabs`}>
@@ -71,22 +66,22 @@ export default ({
         {extra && (
           <div className={`${prefix}-tabs-right`}>
             {extra.map((item) => {
-              return (
+              return item.visible?.(currentFile) !== false ? (
                 <i
                   className={item.icon}
                   title={item.title}
                   key={item.key}
                   onClick={() => {
-                    item.onClick(currentFile);
+                    item.onClick?.(currentFile);
                   }}
                 />
-              );
+              ) : null;
             })}
           </div>
         )}
       </div>
       {/* 面包屑 */}
-      {selectedKey && !selectedKey.startsWith('~designer') && (
+      {selectedKey && (
         <div className={`${prefix}-breadcrumbs`}>
           {dir.map((i) => {
             return (

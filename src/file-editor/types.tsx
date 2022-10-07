@@ -1,5 +1,6 @@
 import { FileProps } from '../file-explorer/types';
 import { CSSProperties, MutableRefObject, ReactNode } from 'react';
+import { editor } from 'monaco-editor';
 
 export interface FileEditorProps {
   files: FileProps[];
@@ -8,18 +9,26 @@ export interface FileEditorProps {
   onClick: (file: FileProps) => void;
   onClose: (file: FileProps, index?: number) => void;
   options?: object;
-  editorMonacoRef?: MutableRefObject<{}>;
-  extraExpansionRender?: (file: FileProps) => any[];
+  editorMonacoRef?: MutableRefObject<editor.IStandaloneCodeEditor>;
+  editorRef?: MutableRefObject<fileEditorRefInstance>;
   extra?: {
     key: string;
     icon: string;
     title: string;
     onClick?: (file: FileProps) => void;
+    visible?: (file: FileProps) => boolean;
   }[];
+}
+
+export interface fileEditorRefInstance {
+  addTab: (tabProps: {
+    path: string;
+    name: string;
+    render: () => ReactNode;
+  }) => {};
 }
 
 export interface FileEditorMainProps extends FileEditorProps {
   onChange: (code: string) => void;
   onSave: (code: string) => void;
-  editorExpansionRender: any;
 }

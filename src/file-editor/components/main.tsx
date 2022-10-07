@@ -1,7 +1,7 @@
 import MonacoEditor from '@/ide-editor';
 import MonacoEditorDiff from '@/ide-editor/diff';
 import { MutableRefObject, useRef } from 'react';
-import { editor } from 'monaco-editor/esm/vs/editor/editor.api';
+import { editor } from 'monaco-editor';
 
 export default ({
   id,
