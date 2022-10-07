@@ -1,7 +1,7 @@
 ---
-title: react-web-ide-component
+title: react-monaco-editor-component
 hero:
-  title: react-web-ide-component
+  title: react-monaco-editor-component
   actions:
     - text: 开始使用
       link: /component

@@ -8,7 +8,7 @@ toc: menu
 
 ```tsx
 import React from 'react';
-import { FileExplorer } from 'react-web-ide-component';
+import { FileExplorer } from 'react-monaco-editor-component';
 import files from './files.json';
 
 export default () => {

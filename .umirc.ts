@@ -13,7 +13,7 @@ export default defineConfig({
     },
   ],
   mode: 'site',
-  title: 'react-web-ide-component',
+  title: 'react-monaco-editor-component',
   outputPath: 'docs-dist',
   locales: [['zh-CN', '中文']],
   theme: {
@@ -39,7 +39,7 @@ export default defineConfig({
     null, // null 值代表保留约定式生成的导航，只做增量配置
     {
       title: 'GitHub',
-      path: 'https://github.com/yunliang-ding/react-web-ide-component',
+      path: 'https://github.com/yunliang-ding/react-monaco-editor-component',
     },
   ],
   chainWebpack: (config) => {

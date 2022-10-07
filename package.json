@@ -1,16 +1,16 @@
 {
-  "name": "react-web-ide-component",
-  "version": "0.0.4",
-  "description": "基于 React 实现一套 webIDE 相关组件",
+  "name": "react-monaco-editor-component",
+  "version": "0.0.6",
+  "description": "基于 monaco-edito 实现一套 web-ide 相关组件",
   "author": "yunliang-ding",
-  "homepage": "https://yunliang-ding.github.io/react-web-ide-component",
+  "homepage": "https://yunliang-ding.github.io/react-monaco-editor-component",
   "keywords": [
     "web-ide",
     "react"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/yunliang-ding/react-web-ide-component"
+    "url": "https://github.com/yunliang-ding/react-monaco-editor-component"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",

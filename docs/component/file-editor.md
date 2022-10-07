@@ -8,7 +8,7 @@ toc: menu
 
 ```tsx
 import React from 'react';
-import { FileEditor } from 'react-web-ide-component';
+import { FileEditor } from 'react-monaco-editor-component';
 
 const files = [
   {
@@ -60,7 +60,7 @@ export default () => {
 
 ```tsx
 import React from 'react';
-import { FileEditor } from 'react-web-ide-component';
+import { FileEditor } from 'react-monaco-editor-component';
 
 const files = [
   {
@@ -126,7 +126,7 @@ export default () => {
 
 ```tsx
 import React from 'react';
-import { FileEditor } from 'react-web-ide-component';
+import { FileEditor } from 'react-monaco-editor-component';
 
 const files = [
   {

@@ -8,7 +8,7 @@ toc: menu
 
 ```tsx
 import React from 'react';
-import { FileSearch } from 'react-web-ide-component';
+import { FileSearch } from 'react-monaco-editor-component';
 
 export default () => {
   const explorerRef = React.useRef({});

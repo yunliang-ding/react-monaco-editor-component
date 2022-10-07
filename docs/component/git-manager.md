@@ -8,7 +8,7 @@ toc: menu
 
 ```tsx
 import React from 'react';
-import { GitManager } from 'react-web-ide-component';
+import { GitManager } from 'react-monaco-editor-component';
 
 export default () => {
   const explorerRef = React.useRef({});

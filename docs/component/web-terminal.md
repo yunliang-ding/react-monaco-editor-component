@@ -8,7 +8,7 @@ toc: menu
 
 ```tsx
 import React from 'react';
-import { WebTerminal } from 'react-web-ide-component';
+import { WebTerminal } from 'react-monaco-editor-component';
 
 export default () => {
   return <WebTerminal />;
