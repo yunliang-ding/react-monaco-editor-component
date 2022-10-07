@@ -25,7 +25,8 @@ export interface fileEditorRefInstance {
     path: string;
     name: string;
     render: () => ReactNode;
-  }) => {};
+  }) => void;
+  checkTab: (key: string) => void;
 }
 
 export interface FileEditorMainProps extends FileEditorProps {

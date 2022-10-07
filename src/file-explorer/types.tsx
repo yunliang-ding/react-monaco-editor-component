@@ -1,4 +1,4 @@
-import { CSSProperties, MutableRefObject } from 'react';
+import { CSSProperties, MutableRefObject, ReactNode } from 'react';
 
 export interface FileProps {
   /** 文件路径 */
@@ -19,6 +19,8 @@ export interface FileProps {
   children?: FileProps[];
   /** 文件内容 */
   content?: string;
+  /** 自定义渲染 */
+  render?: (file: FileProps) => ReactNode;
 }
 
 export interface FileExplorerProps {

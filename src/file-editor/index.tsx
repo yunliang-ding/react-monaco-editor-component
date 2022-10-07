@@ -1,5 +1,5 @@
 import { FileEditorMainProps } from './types';
-import Tabs from './components/tabs';
+import HeaderTabs from './components/tabs';
 import Main from './components/main';
 import CreateSpin from '@/compontent/create-spin';
 import { cloneDeep } from 'lodash';
@@ -63,15 +63,28 @@ export default ({
       window.removeEventListener('keydown', keyboardEvent);
     };
   }, [_selectedKey]);
+  // 扩展相关的 API
   useEffect(() => {
-    // editorRef.current.addTab = (tab) => {
-    // }
-  }, []);
+    // 新增tab
+    editorRef.current.addTab = (tab) => {
+      innerFiles.push({
+        type: 'file',
+        extension: '.preview',
+        ...tab,
+      });
+      setInnerFiles([...innerFiles]);
+      setSelectedKey(tab.path);
+    };
+    // 切换到指定的tab
+    editorRef.current.checkTab = (key: string) => {
+      setSelectedKey(key);
+    };
+  }, [innerFiles]);
   return (
     <div style={style} className={`${prefixCls} show-file-icons`}>
       {innerFiles.length > 0 ? (
         <>
-          <Tabs
+          <HeaderTabs
             files={innerFiles}
             selectedKey={_selectedKey}
             onClick={(file) => {
@@ -97,22 +110,27 @@ export default ({
                 }}
               >
                 <div className="ide-editor-file-editor-body">
-                  <Main
-                    id={`ide-editor-${file.path}`}
-                    editorMonacoRef={editorMonacoRef}
-                    options={{
-                      language: {
-                        '.json': 'json',
-                        '.js': 'javascript',
-                        '.ts': 'javascript',
-                        '.tsx': 'javascript',
-                      }[file.extension],
-                    }}
-                    value={file.content}
-                    onChange={(code) => {
-                      onChange?.(code);
-                    }}
-                  />
+                  {typeof file.render === 'function' ? (
+                    // 自定义渲染
+                    file.render(file)
+                  ) : (
+                    <Main
+                      id={`ide-editor-${file.path}`}
+                      editorMonacoRef={editorMonacoRef}
+                      options={{
+                        language: {
+                          '.json': 'json',
+                          '.js': 'javascript',
+                          '.ts': 'javascript',
+                          '.tsx': 'javascript',
+                        }[file.extension],
+                      }}
+                      value={file.content}
+                      onChange={(code) => {
+                        onChange?.(code);
+                      }}
+                    />
+                  )}
                 </div>
               </div>
             );

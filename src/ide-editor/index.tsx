@@ -13,6 +13,7 @@ const defaultOptions: editor.IStandaloneEditorConstructionOptions = {
   tabSize: 2,
   fontSize: 14,
   fontFamily: 'monaco',
+  fontWeight: '600',
   minimap: {
     enabled: true,
   },
