@@ -39,7 +39,8 @@
     "lodash": "4.17.21",
     "monaco-editor": "0.33.0",
     "react-dom": "17.0.2",
-    "react-contexify": "5.0.0"
+    "react-contexify": "5.0.0",
+    "axios": "1.1.2"
   },
   "peerDependencies": {
     "react": "17.0.2"

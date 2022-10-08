@@ -3,8 +3,9 @@ import HeaderTabs from './components/tabs';
 import Main from './components/main';
 import CreateSpin from '@/compontent/create-spin';
 import { cloneDeep } from 'lodash';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { FileProps } from '@/file-explorer/types';
+import { uuid } from '@/util';
 import './index.less';
 
 const defaultExtra = [
@@ -19,12 +20,8 @@ const defaultExtra = [
     title: '更多',
   },
 ];
-const prefixCls = 'ide-editor-file-editor';
 
-const spin = CreateSpin({
-  getContainer: () => document.querySelector(`.${prefixCls}`),
-  text: '保存中...',
-});
+const prefixCls = 'ide-editor-file-editor';
 
 export default ({
   files,
@@ -41,6 +38,11 @@ export default ({
     addTab: {},
   } as any),
 }: FileEditorProps) => {
+  const domKey = useMemo(() => `class-${uuid(12)}`, []);
+  const spin = CreateSpin({
+    getContainer: () => document.querySelector(`.${domKey}`),
+    text: '保存中...',
+  });
   const [_selectedKey, setSelectedKey] = useState<string>(selectedKey);
   const [innerFiles, setInnerFiles] = useState<FileProps[]>([]);
   useEffect(() => {
@@ -82,7 +84,7 @@ export default ({
     };
   }, [innerFiles]);
   return (
-    <div style={style} className={`${prefixCls} show-file-icons`}>
+    <div style={style} className={`${prefixCls} show-file-icons ${domKey}`}>
       {innerFiles.length > 0 ? (
         <>
           <HeaderTabs
