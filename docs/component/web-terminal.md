@@ -11,6 +11,10 @@ import React from 'react';
 import { WebTerminal } from 'react-monaco-editor-component';
 
 export default () => {
-  return <WebTerminal />;
+  return (
+    <WebTerminal>
+      <pre>开发中暂无法使用 </pre>
+    </WebTerminal>
+  );
 };
 ```

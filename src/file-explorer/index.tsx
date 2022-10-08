@@ -8,6 +8,7 @@ import { getFileByPath, isEmpty, uuid } from '@/util';
 import { cloneDeep } from 'lodash';
 import { useContextMenu } from 'react-contexify';
 import Contexify from './contexify';
+import { getContent, getTree, createFileContent } from '@/github-api/services';
 import './index.less';
 
 const prefixCls = 'ide-component-file-explorer';
@@ -36,6 +37,11 @@ export default ({
   menus,
   spinWapper = explorerSpin,
 }: FileExplorerProps) => {
+  // useEffect(() => {
+  //   getTree();
+  //   getContent('56e68c4f4ab03ef526ae65e9c17a91bc7c24411a');
+  //   createFileContent('just test');
+  // }, [])
   const { show } = useContextMenu({
     id: MENU_ID,
   });
