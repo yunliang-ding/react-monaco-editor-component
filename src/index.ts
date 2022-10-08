@@ -4,6 +4,7 @@ import FileSearch from './file-search';
 import GitManager from './git-manager';
 import WebTerminal from './web-terminal';
 import IdeEditor from './ide-editor';
+import GithubApi from './github-api';
 
 export {
   IdeEditor,
@@ -12,4 +13,5 @@ export {
   FileSearch,
   GitManager,
   WebTerminal,
+  GithubApi,
 };

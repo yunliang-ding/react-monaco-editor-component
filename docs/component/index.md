@@ -3,7 +3,7 @@ title: 介绍
 order: 1
 toc: menu
 nav:
-  title: 组件
+  title: 基础组件
   order: 1
 ---
 
