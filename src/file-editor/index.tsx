@@ -57,13 +57,18 @@ export default ({
     ) {
       e.preventDefault();
       spin.open();
-      const file = innerFiles.find((i) => i.path === _selectedKey);
-      const content = window[`ide-editor-${_selectedKey}`]?.getValue();
-      await onSave(content); // 等待外面，通过之后再更新状态
-      file.content = content;
-      file.notSave = false;
-      setInnerFiles([...innerFiles]);
-      spin.close();
+      try {
+        const file = innerFiles.find((i) => i.path === _selectedKey);
+        const content = window[`ide-editor-${_selectedKey}`]?.getValue?.();
+        await onSave(content); // 等待外面，通过之后再更新状态
+        file.content = content;
+        file.notSave = false;
+        setInnerFiles([...innerFiles]);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        spin.close();
+      }
     }
   };
   useEffect(() => {
@@ -71,7 +76,7 @@ export default ({
     return () => {
       window.removeEventListener('keydown', keyboardEvent);
     };
-  }, [_selectedKey, innerFiles]);
+  }, [_selectedKey]);
   // 扩展相关的 API
   useEffect(() => {
     // 新增tab
