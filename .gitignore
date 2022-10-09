@@ -8,7 +8,8 @@ build/
 dist/
 tmp/
 lib/
-
+src/
+docs-dist/
 # misc
 .idea/
 .happypack
