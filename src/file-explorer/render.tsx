@@ -62,6 +62,17 @@ export const labelRender = (file, onAddDone, renameFileDone, prefixCls) => {
     <span className={`${prefixCls}-label`}>{file.name}</span>
   );
 };
+/** gitStatusRender */
+export const gitStatusRender = (file, prefixCls) => {
+  return (
+    file.gitStatus &&
+    (file.type === 'directory' ? (
+      <span className={`${prefixCls}-status-dot`} />
+    ) : (
+      <span className={`${prefixCls}-status`}>{file.gitStatus}</span>
+    ))
+  );
+};
 /** 渲染结构树 */
 export const RenderFileTree = ({
   selectedKey,
@@ -100,6 +111,7 @@ export const RenderFileTree = ({
             >
               {iconRender(file)}
               {labelRender(file, onAddDone, renameFileDone, itemPrefixCls)}
+              {gitStatusRender(file, itemPrefixCls)}
             </div>
             {file.status === 'expanded' && (
               <RenderFileTree

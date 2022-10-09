@@ -21,6 +21,10 @@ export interface FileProps {
   content?: string;
   /** 自定义渲染 */
   render?: (file: FileProps) => ReactNode;
+  /** 和 git 相关 */
+  gitStatus?: 'U' | 'M' | undefined;
+  /** 暂存区文件内容 */
+  stageContent?: string;
 }
 
 export interface FileExplorerProps {

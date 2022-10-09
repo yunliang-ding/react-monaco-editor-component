@@ -7,6 +7,7 @@ import { useEffect, useRef, useState, useMemo } from 'react';
 import { FileProps } from '@/file-explorer/types';
 import { uuid } from '@/util';
 import './index.less';
+import { sleep } from '@/file-explorer';
 
 const defaultExtra = [
   {
@@ -31,7 +32,7 @@ export default ({
   onClick = () => {},
   onClose = () => {},
   onChange = () => {},
-  onSave = (code) => {},
+  onSave = sleep,
   editorMonacoRef,
   monacoOptions,
   editorRef = useRef({
@@ -56,7 +57,12 @@ export default ({
     ) {
       e.preventDefault();
       spin.open();
-      await onSave(window[`ide-editor-${_selectedKey}`]?.getValue());
+      const file = innerFiles.find((i) => i.path === _selectedKey);
+      const content = window[`ide-editor-${_selectedKey}`]?.getValue();
+      await onSave(content); // 等待外面，通过之后再更新状态
+      file.content = content;
+      file.notSave = false;
+      setInnerFiles([...innerFiles]);
       spin.close();
     }
   };
@@ -65,7 +71,7 @@ export default ({
     return () => {
       window.removeEventListener('keydown', keyboardEvent);
     };
-  }, [_selectedKey]);
+  }, [_selectedKey, innerFiles]);
   // 扩展相关的 API
   useEffect(() => {
     // 新增tab
@@ -131,6 +137,9 @@ export default ({
                       }}
                       value={file.content}
                       onChange={(code) => {
+                        // 判断是否修改了
+                        file.notSave = code !== file.content;
+                        setInnerFiles([...innerFiles]);
                         onChange?.(code);
                       }}
                     />

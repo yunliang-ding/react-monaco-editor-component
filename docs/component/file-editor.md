@@ -56,6 +56,67 @@ export default () => {
 };
 ```
 
+## 和远程文件对比
+
+```tsx
+import React from 'react';
+import { FileEditor } from 'react-monaco-editor-component';
+
+const files = [
+  {
+    path: '/User/project/src/age.tsx',
+    type: 'file',
+    extension: '.tsx',
+    name: 'age.tsx',
+    gitStatus: 'M',
+    notSave: false,
+    content: `export default () => {
+  return 'demo'
+}`,
+    stageContent: `export default () => {
+  return 'just test'
+}`,
+  },
+  {
+    path: '/User/project/src/age.json',
+    type: 'file',
+    extension: '.json',
+    name: 'age.json',
+    gitStatus: 'M',
+    notSave: false,
+    content: `{
+  "name": "123abc"
+}`,
+    stageContent: `{
+  "name": "abc123",
+  "address": "sdskjkcksdl"
+}`,
+  },
+];
+export default () => {
+  return (
+    <FileEditor
+      files={files}
+      selectedKey={files[0].path}
+      style={{ width: '100%', height: 500 }}
+      onClose={(file) => {
+        console.log('onClose', file);
+      }}
+      onClick={(file) => {
+        console.log('onClick', file);
+      }}
+      onChange={(code) => {
+        console.log('onChange', code);
+      }}
+      onSave={async (code) => {
+        await new Promise((res) => setTimeout(res, 1000));
+        console.log('onSave', code);
+      }}
+    />
+  );
+};
+```
+
 ## 自定义右侧操作按钮
 
 ```tsx

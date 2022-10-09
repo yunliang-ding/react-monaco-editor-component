@@ -24,7 +24,51 @@ export default () => {
   React.useEffect(init, []);
   return (
     <FileExplorer
-      projectName="react-web-ied-compontent"
+      projectName="monaco-editor-compontent"
+      explorerRef={explorerRef}
+      style={{ width: 260, height: 400 }}
+      onRefresh={init}
+      onClick={(file) => {
+        console.log('onClick', file);
+      }}
+      onCreateFile={async (file) => {
+        await new Promise((res) => setTimeout(res, 2000));
+        console.log(file);
+      }}
+      onRenameFile={async (file) => {
+        await new Promise((res) => setTimeout(res, 2000));
+        console.log(file);
+      }}
+      onDeleteFile={async (file) => {
+        await new Promise((res) => setTimeout(res, 2000));
+        console.log(file);
+      }}
+    />
+  );
+};
+```
+
+## 文件不同步远程提示
+
+```tsx
+import React from 'react';
+import { FileExplorer } from 'react-monaco-editor-component';
+import filesGit from './files-git.json';
+
+export default () => {
+  const explorerRef = React.useRef({});
+  /** 请求数据 */
+  const init = async () => {
+    explorerRef.current.openSpin();
+    // 模拟接口
+    await new Promise((res) => setTimeout(res, 1000));
+    explorerRef.current.setFiles(filesGit);
+    explorerRef.current.closeSpin();
+  };
+  React.useEffect(init, []);
+  return (
+    <FileExplorer
+      projectName="monaco-editor-compontent"
       explorerRef={explorerRef}
       style={{ width: 260, height: 400 }}
       onRefresh={init}
