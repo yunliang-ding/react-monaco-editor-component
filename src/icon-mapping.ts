@@ -7,5 +7,8 @@ export const iconMapping = {
   '.html': 'html-lang-file-icon',
   '.css': 'css-lang-file-icon',
   '.less': 'less-lang-file-icon',
+  '.py': 'python-lang-file-icon',
+  '.md': 'markdown-lang-file-icon',
+  '.ignore': 'ignore-lang-file-icon',
   '.preview': '',
 };

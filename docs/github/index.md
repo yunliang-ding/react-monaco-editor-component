@@ -29,6 +29,53 @@ const githubInstance = GithubApi.create({
 githubInstance.getTree();
 ```
 
+```tsx
+import React from 'react';
+import { FileExplorer, GithubApi } from 'react-monaco-editor-component';
+
+const githubInstance = GithubApi.create({
+  owner: 'yunliang-ding',
+  repo: 'demo-github-api',
+  branch: 'main',
+  token: 'ghp_xXydYL03OBhChcreE3w0mSmWAy9VQ1lln1OXMQ3VHxTh',
+});
+
+export default () => {
+  const explorerRef = React.useRef({});
+  /** 请求数据 */
+  const init = async () => {
+    explorerRef.current.openSpin();
+    await new Promise((res) => setTimeout(res, 800));
+    explorerRef.current.setFiles(await githubInstance.getTree());
+    explorerRef.current.closeSpin();
+  };
+  React.useEffect(init, []);
+  return (
+    <FileExplorer
+      projectName="monaco-editor-compontent"
+      explorerRef={explorerRef}
+      style={{ width: 260, height: 400 }}
+      onRefresh={init}
+      onClick={(file) => {
+        console.log('onClick', file);
+      }}
+      onCreateFile={async (file) => {
+        await new Promise((res) => setTimeout(res, 2000));
+        console.log(file);
+      }}
+      onRenameFile={async (file) => {
+        await new Promise((res) => setTimeout(res, 2000));
+        console.log(file);
+      }}
+      onDeleteFile={async (file) => {
+        await new Promise((res) => setTimeout(res, 2000));
+        console.log(file);
+      }}
+    />
+  );
+};
+```
+
 ### 创建文件
 
 ```ts

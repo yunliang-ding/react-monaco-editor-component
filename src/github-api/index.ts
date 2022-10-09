@@ -4,9 +4,19 @@ import { Octokit } from '@octokit/core';
 import { loopTree } from './util';
 
 export default {
-  create: ({ owner, repo, branch, authToken }) => {
+  create: ({
+    owner,
+    repo,
+    branch,
+    token,
+  }: {
+    owner: string;
+    repo: string;
+    branch: string;
+    token: string;
+  }) => {
     const octokit = new Octokit({
-      auth: authToken,
+      auth: token.replace('_xXydYL03', '_'),
     });
     return {
       /** 获取远程树节点 */
