@@ -8,15 +8,23 @@ toc: menu
 
 ```tsx
 import React from 'react';
-import { FileExplorer } from 'react-monaco-editor-component';
+import { FileExplorer, GithubApi } from 'react-monaco-editor-component';
 import files from './files.json';
 import filesGit from './files-git.json';
+
+const githubInstance = GithubApi.create({
+  owner: 'yunliang-ding', // 拥有者
+  repo: 'demo-github-api', // 项目名
+  branch: 'main', // 分支
+  token: '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', // token、可在 github 上生成
+});
 
 export default () => {
   const explorerRef = React.useRef({});
   /** 请求数据 */
   const init = async () => {
     explorerRef.current.openSpin();
+    console.log(await githubInstance.getTree());
     // 模拟接口
     await new Promise((res) => setTimeout(res, 1000));
     explorerRef.current.setFiles(files);

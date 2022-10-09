@@ -15,8 +15,6 @@ nav:
 
 - 文件查找 `FileSearch` 全局查询相关内容
 
-- Git 管理工具 `GitManager` 项目的 git 管理工具
-
-- Web 终端服务 `WebTerminal` 项目在线终端调试器
+- 远程代码管理 `GitManager` git 管理工具
 
 </Alert>

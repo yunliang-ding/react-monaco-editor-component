@@ -1,6 +1,7 @@
 // Create a personal access token at https://github.com/settings/tokens/new?scopes=repo
 
 import { Octokit } from '@octokit/core';
+import { loopTree } from './util';
 
 export default {
   create: ({ owner, repo, branch, authToken }) => {
@@ -10,9 +11,10 @@ export default {
     return {
       /** 获取远程树节点 */
       getTree: async () => {
-        return octokit.request(
+        const { data } = await octokit.request(
           `GET /repos/${owner}/${repo}/git/trees/${branch}`,
         );
+        return loopTree(data.tree);
       },
       /** 获取远程文件的内容 */
       getContent: async (content: string) => {
