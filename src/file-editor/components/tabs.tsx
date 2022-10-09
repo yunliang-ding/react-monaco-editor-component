@@ -4,6 +4,11 @@ import { FileEditorProps } from '../types';
 
 const prefix = 'ide-editor-file-editor-header';
 
+const StageMapping = {
+  M: ' (Working Tree)',
+  U: ' (Unstracked)',
+};
+
 export default ({
   files = [],
   selectedKey,
@@ -37,8 +42,12 @@ export default ({
                 }}
               >
                 <i className={`file-icon ${iconMapping[tab.extension]}`} />
-                <span className={`${prefix}-tabs-left-item-label`}>
+                <span
+                  className={`${prefix}-tabs-left-item-label${tab.gitStatus}`}
+                >
                   {tab.name}
+                  {tab.gitStatus !== undefined && StageMapping[tab.gitStatus]}
+                  &nbsp;&nbsp;{tab.gitStatus}
                 </span>
                 {tab.notSave && (
                   <div className={`${prefix}-tabs-left-item-dot`} />

@@ -6,8 +6,8 @@ import { cloneDeep } from 'lodash';
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { FileProps } from '@/file-explorer/types';
 import { uuid } from '@/util';
-import './index.less';
 import { sleep } from '@/file-explorer';
+import './index.less';
 
 const defaultExtra = [
   {
@@ -126,6 +126,7 @@ export default ({
                     <Main
                       id={`ide-editor-${file.path}`}
                       editorMonacoRef={editorMonacoRef}
+                      mode={file.gitStatus !== undefined ? 'diff' : undefined}
                       monacoOptions={{
                         language: {
                           '.json': 'json',
@@ -136,6 +137,7 @@ export default ({
                         ...monacoOptions,
                       }}
                       value={file.content}
+                      originalValue={file.stageContent}
                       onChange={(code) => {
                         // 判断是否修改了
                         file.notSave = code !== file.content;

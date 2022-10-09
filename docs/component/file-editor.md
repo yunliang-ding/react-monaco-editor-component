@@ -82,14 +82,10 @@ const files = [
     type: 'file',
     extension: '.json',
     name: 'age.json',
-    gitStatus: 'M',
+    gitStatus: 'U',
     notSave: false,
     content: `{
   "name": "123abc"
-}`,
-    stageContent: `{
-  "name": "abc123",
-  "address": "sdskjkcksdl"
 }`,
   },
 ];

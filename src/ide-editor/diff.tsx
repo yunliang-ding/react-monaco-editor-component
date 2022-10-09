@@ -20,6 +20,7 @@ const defaultOptions: editor.IStandaloneDiffEditorConstructionOptions = {
   readOnly: true,
   renderSideBySide: true,
   fontSize: 14,
+  fontWeight: '600',
   minimap: {
     enabled: false,
   },
@@ -51,5 +52,5 @@ export default ({
       modified: modifiedModal,
     });
   }, []);
-  return <div id={id} className="app-monaco-editor" />;
+  return <div id={id} className="app-ide-editor-diff" />;
 };
