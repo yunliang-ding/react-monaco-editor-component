@@ -1,46 +1,43 @@
-import FileExplorer from '@/file-explorer';
-import { explorerRefInstance } from '@/file-explorer/types';
-import { useMemo, useRef, useEffect } from 'react';
-import GithubApi, { GitHubApiProps } from '../github-api';
+import { useState, CSSProperties } from 'react';
+import { GitHubApiProps } from '../github-api';
+import Sider from './sider';
+import Footer from './footer';
+import Main from './main';
+import './index.less';
 
 interface MyCodeSpaceProps {
   gitConfig: GitHubApiProps;
+  style?: CSSProperties;
 }
 
 /** 整合小部件 */
-export default ({ gitConfig }: MyCodeSpaceProps) => {
-  const explorerRef = useRef<explorerRefInstance>({} as any);
-  const githubInstance = useMemo(() => {
-    return GithubApi.create(gitConfig);
-  }, [gitConfig]);
-  /** 请求数据 */
-  const init = async () => {
-    explorerRef.current.openSpin();
-    await new Promise((res) => setTimeout(res, 800));
-    explorerRef.current.setFiles(await githubInstance.getTree());
-    explorerRef.current.closeSpin();
+export default ({ gitConfig, style = {} }: MyCodeSpaceProps) => {
+  const [siderKey, setSiderKey] = useState<string>('Code');
+  const [notSaveCount, setNotSaveCount] = useState<number>(0);
+  const [collapsed, setCollapsed] = useState(false);
+  // 侧边栏点击
+  const siderBarClick = (key) => {
+    if (key === siderKey) {
+      setCollapsed(!collapsed);
+    } else {
+      setCollapsed(false);
+    }
+    setSiderKey(key);
   };
-  useEffect(() => {
-    init();
-  }, []);
   return (
-    <FileExplorer
-      projectName="monaco-editor-compontent"
-      explorerRef={explorerRef}
-      style={{ width: 260, height: 400 }}
-      onRefresh={init}
-      onClick={(file) => {
-        console.log('onClick', file);
-      }}
-      onCreateFile={async (file) => {
-        await new Promise((res) => setTimeout(res, 2000));
-      }}
-      onRenameFile={async (file) => {
-        await new Promise((res) => setTimeout(res, 2000));
-      }}
-      onDeleteFile={async (file) => {
-        await new Promise((res) => setTimeout(res, 2000));
-      }}
-    />
+    <div className="my-code-space" style={style}>
+      <Sider
+        diffLength={0}
+        notSaveCount={notSaveCount}
+        siderKey={siderKey}
+        onClick={siderBarClick}
+      />
+      <Main gitConfig={gitConfig} collapsed={collapsed} siderKey={siderKey} />
+      <Footer
+        currentBranch={gitConfig.branch}
+        waitCommit={0}
+        onPush={() => {}}
+      />
+    </div>
   );
 };

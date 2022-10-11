@@ -4,6 +4,7 @@ import FileSearch from './file-search';
 import GitManager from './git-manager';
 import IdeEditor from './ide-editor';
 import GithubApi from './github-api';
+export type { FileExplorerProps, FileProps } from './file-explorer/types';
 /**
  * 整合
  */
