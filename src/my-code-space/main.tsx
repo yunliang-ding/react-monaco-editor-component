@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-return-assign */
 import { explorerRefInstance } from '@/file-explorer/types';
 import GithubApi from '../github-api';
 import SplitPane from 'react-split-pane';
@@ -49,7 +51,6 @@ export default ({ gitConfig, collapsed, siderKey }) => {
   useEffect(() => {
     localStorage.setItem('__active_key__', activeKey);
   }, [activeKey]);
-  console.log('tabs', tabs);
   return (
     <div className={prefixCls}>
       <SplitPane
@@ -120,6 +121,7 @@ export default ({ gitConfig, collapsed, siderKey }) => {
             files={tabs}
             selectedKey={activeKey}
             onClose={(file) => {
+              file.status = 'nomal';
               console.log('onClose', file);
             }}
             onClick={(file) => {
