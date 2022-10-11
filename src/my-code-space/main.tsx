@@ -72,7 +72,9 @@ export default ({ gitConfig, collapsed, siderKey }) => {
               explorerRef={explorerRef}
               onRefresh={init}
               onClick={(file) => {
-                setActiveKey(file.path);
+                if (file.type === 'file') {
+                  setActiveKey(file.path);
+                }
               }}
               onOpenFileChange={(files) => {
                 setTabs(files);

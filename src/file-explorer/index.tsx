@@ -96,8 +96,10 @@ export default ({
   const onFileClick = (file: FileProps) => {
     if (file.type === 'directory') {
       file.status = file.status === 'expanded' ? 'nomal' : 'expanded';
+    } else {
+      file.status = 'open';
+      setSelected(file.path);
     }
-    setSelected(file.path);
     setFiles([...files]);
     onClick(file);
     onOpenFileChange(getOpenFiles(files));

@@ -1,16 +1,3 @@
-/* eslint-disable @iceworks/best-practices/recommend-polyfill */
-const openFullscreen = () => {
-  const full: any = document.getElementById('root');
-  if (full.webkitRequestFullScreen) {
-    full.webkitRequestFullScreen?.();
-  }
-};
-const exitFullscreen = () => {
-  if (document.exitFullscreen()) {
-    document.exitFullscreen?.();
-  }
-};
-
 const prefixCls = 'my-code-space-sider';
 
 export default ({ notSaveCount, diffLength, siderKey, onClick }) => {
@@ -57,16 +44,10 @@ export default ({ notSaveCount, diffLength, siderKey, onClick }) => {
       })}
       <div className="app-setting">
         <div title="用户设置" className={`${prefixCls}-item`}>
-          <i
-            className="codicon codicon codicon-accounts-view-bar-icon"
-            onClick={openFullscreen}
-          />
+          <i className="codicon codicon codicon-accounts-view-bar-icon" />
         </div>
         <div title="系统设置" className={`${prefixCls}-item`}>
-          <i
-            className="codicon codicon-settings-view-bar-icon"
-            onClick={exitFullscreen}
-          />
+          <i className="codicon codicon-settings-view-bar-icon" />
         </div>
       </div>
     </div>

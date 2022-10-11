@@ -45,6 +45,9 @@ export default ({
     text: '保存中...',
   });
   const [_selectedKey, setSelectedKey] = useState<string>(selectedKey);
+  useEffect(() => {
+    setSelectedKey(selectedKey);
+  }, [selectedKey]);
   const [innerFiles, setInnerFiles] = useState<FileProps[]>([]);
   useEffect(() => {
     setInnerFiles(cloneDeep(files)); // 剔除引用关系
