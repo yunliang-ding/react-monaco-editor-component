@@ -3,18 +3,15 @@
 import { Octokit } from '@octokit/core';
 import { loopTree } from './util';
 
+export interface GitHubApiProps {
+  owner: string;
+  repo: string;
+  branch: string;
+  token: string;
+}
+
 export default {
-  create: ({
-    owner,
-    repo,
-    branch,
-    token,
-  }: {
-    owner: string;
-    repo: string;
-    branch: string;
-    token: string;
-  }) => {
+  create: ({ owner, repo, branch, token }: GitHubApiProps) => {
     const octokit = new Octokit({
       auth: token.replace('_xXydYL03', '_'),
     });

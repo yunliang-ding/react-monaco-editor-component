@@ -4,6 +4,10 @@ import FileSearch from './file-search';
 import GitManager from './git-manager';
 import IdeEditor from './ide-editor';
 import GithubApi from './github-api';
+/**
+ * 整合
+ */
+import MyCodeSpace from './my-code-space';
 
 export {
   IdeEditor,
@@ -12,4 +16,5 @@ export {
   FileSearch,
   GitManager,
   GithubApi,
+  MyCodeSpace,
 };

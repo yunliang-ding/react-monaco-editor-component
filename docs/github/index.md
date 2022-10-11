@@ -7,7 +7,27 @@ nav:
   order: 2
 ---
 
-## 参考如下步骤
+## 使用 MyCodeSpace 传入相关配置
+
+```tsx
+import React from 'react';
+import { MyCodeSpace } from 'react-monaco-editor-component';
+
+export default () => {
+  return (
+    <MyCodeSpace
+      gitConfig={{
+        owner: 'yunliang-ding', // 拥有者
+        repo: 'demo-github-api', // 项目名
+        branch: 'main', // 分支
+        token: 'ghp_xXydYL03OBhChcreE3w0mSmWAy9VQ1lln1OXMQ3VHxTh', // token、可在 github 上生成
+      }}
+    />
+  );
+};
+```
+
+## 自定义参考如下步骤
 
 ### 生成 GithubApi 实例
 
@@ -49,7 +69,9 @@ export default () => {
     explorerRef.current.setFiles(await githubInstance.getTree());
     explorerRef.current.closeSpin();
   };
-  React.useEffect(init, []);
+  React.useEffect(() => {
+    init();
+  }, []);
   return (
     <FileExplorer
       projectName="monaco-editor-compontent"

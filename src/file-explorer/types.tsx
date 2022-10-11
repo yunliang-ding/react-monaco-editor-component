@@ -37,11 +37,11 @@ export interface FileExplorerProps {
   /** 文件点击 */
   onClick?: (file: FileProps) => void;
   /** 创建文件或者文件夹 */
-  onCreateFile?: (file: FileProps) => Promise<boolean>;
+  onCreateFile?: (file: FileProps) => Promise<void>;
   /** 重命名文件 */
-  onRenameFile?: (file: FileProps) => Promise<boolean>;
+  onRenameFile?: (file: FileProps) => Promise<void>;
   /** 删除文件 */
-  onDeleteFile?: (file: FileProps) => Promise<boolean>;
+  onDeleteFile?: (file: FileProps) => Promise<void>;
   /** 刷新文件 */
   onRefresh?: () => void;
   /** 项目名称 */
