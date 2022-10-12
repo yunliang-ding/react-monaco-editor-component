@@ -3,11 +3,12 @@
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable @iceworks/best-practices/recommend-polyfill */
 import { FileProps } from '@/file-explorer/types';
+import request from './request';
 
 /** 递归节点 */
 export const loopTree = async (
   tree: any[],
-  getContent,
+  gitUrl,
   partent?,
 ): Promise<FileProps[]> => {
   const arr = [];
@@ -28,20 +29,13 @@ export const loopTree = async (
       extension: getFileExtension(item.path),
     };
     if (item.type === 'blob') {
-      fileItem.extension = getFileExtension(item.path);
+      fileItem.extension = getFileExtension(fileItem.path);
       fileItem.size = item.size;
-      console.log(fileItem.path);
-      const {
-        data: { content },
-      } = await getContent(item.sha);
-      fileItem.content = atob(content);
+      const content = await request(`${gitUrl}/${fileItem.path}`, 'text');
+      fileItem.content = content;
     }
     if (item.type === 'tree') {
-      fileItem.children = await loopTree(
-        await request(item.url),
-        getContent,
-        item,
-      );
+      fileItem.children = await loopTree(await request(item.url), gitUrl, item);
     }
     arr.push(fileItem);
   }
@@ -50,8 +44,4 @@ export const loopTree = async (
 
 const getFileExtension = (name: string) => {
   return name.substring(name.lastIndexOf('.'));
-};
-
-const request = async (url: string) => {
-  return (await (await fetch(url)).json()).tree;
 };

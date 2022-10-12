@@ -21,12 +21,10 @@ export default {
         const { data } = await octokit.request(
           `GET /repos/${owner}/${repo}/git/trees/${branch}`,
         );
-        const getContent = async (content: string) => {
-          return octokit.request(
-            `GET /repos/${owner}/${repo}/git/blobs/${content}`,
-          );
-        };
-        return loopTree(data.tree, getContent);
+        return loopTree(
+          data.tree,
+          `https://raw.githubusercontent.com/${owner}/${repo}/${branch}`,
+        );
       },
       /** 获取远程文件的内容 */
       getContent: async (content: string) => {

@@ -25,22 +25,23 @@ export default ({ gitConfig, collapsed, siderKey }) => {
   const init = async () => {
     explorerRef.current.openSpin();
     await new Promise((res) => setTimeout(res, 800));
+    console.log(await githubInstance.getTree());
     explorerRef.current.setFiles(await githubInstance.getTree());
     explorerRef.current.closeSpin();
   };
   /** 请求数据 */
   const initGit = async () => {
-    explorerRef.current.openSpin();
-    await new Promise((res) => setTimeout(res, 800));
-    explorerRef.current.setFiles(await githubInstance.getTree());
-    explorerRef.current.closeSpin();
+    // explorerRef.current.openSpin();
+    // await new Promise((res) => setTimeout(res, 800));
+    // explorerRef.current.setFiles(await githubInstance.getTree());
+    // explorerRef.current.closeSpin();
   };
   /** 请求数据 */
   const initSearch = async () => {
-    explorerRef.current.openSpin();
-    await new Promise((res) => setTimeout(res, 800));
-    explorerRef.current.setFiles(await githubInstance.getTree());
-    explorerRef.current.closeSpin();
+    // explorerRef.current.openSpin();
+    // await new Promise((res) => setTimeout(res, 800));
+    // explorerRef.current.setFiles(await githubInstance.getTree());
+    // explorerRef.current.closeSpin();
   };
   useEffect(() => {
     init();
