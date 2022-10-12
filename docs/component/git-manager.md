@@ -12,6 +12,7 @@ import { GitManager } from 'react-monaco-editor-component';
 
 export default () => {
   const explorerRef = React.useRef({});
+  const [treeData, setTreeData] = React.useState([]);
   /** 请求数据 */
   const init = async () => {
     explorerRef.current.openSpin({
@@ -19,7 +20,7 @@ export default () => {
     });
     // 模拟接口
     await new Promise((res) => setTimeout(res, 1000));
-    explorerRef.current.setFiles([
+    setTreeData([
       {
         path: '/User/project/config.json',
         type: 'file',
@@ -47,12 +48,15 @@ export default () => {
     ]);
     explorerRef.current.closeSpin();
   };
-  React.useEffect(init, []);
+  React.useEffect(() => {
+    init();
+  }, []);
   return (
     <GitManager
       style={{ width: 260, height: 400 }}
       explorerRef={explorerRef}
       onRefresh={init}
+      treeData={treeData}
       onClick={(file) => {
         console.log('onClick', file);
       }}

@@ -1,6 +1,6 @@
+/* eslint-disable no-alert */
 import { iconMapping } from '@/icon-mapping';
 import { FileProps } from '@/file-explorer/types';
-import { FileEditorProps } from '../types';
 
 const prefix = 'ide-editor-file-editor-header';
 
@@ -10,15 +10,13 @@ const StageMapping = {
 };
 
 export default ({
-  files = [],
+  tabs = [],
   selectedKey,
   onClick,
-  onClose,
+  onTabClose,
   extra,
-}: FileEditorProps) => {
-  const currentFile: FileProps = files.find(
-    (file) => file.path === selectedKey,
-  );
+}: any) => {
+  const currentFile: FileProps = tabs.find((file) => file.path === selectedKey);
   if (currentFile === undefined) {
     return null;
   }
@@ -28,7 +26,7 @@ export default ({
     <div className="ide-editor-file-editor-header">
       <div className={`${prefix}-tabs`}>
         <div className={`${prefix}-tabs-left`}>
-          {files.map((tab, index) => {
+          {tabs.map((tab, index) => {
             return (
               <div
                 key={tab.path}
@@ -59,10 +57,10 @@ export default ({
                     if (tab.notSave) {
                       const result = confirm('当前文件未保存，是否确认关闭?');
                       if (result) {
-                        onClose(tab, index);
+                        onTabClose(tab, index);
                       }
                     } else {
-                      onClose(tab, index);
+                      onTabClose(tab, index);
                     }
                   }}
                 >

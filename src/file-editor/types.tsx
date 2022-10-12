@@ -3,16 +3,16 @@ import { CSSProperties, MutableRefObject, ReactNode } from 'react';
 import { editor } from 'monaco-editor';
 
 export interface FileEditorProps {
-  /** 文件列表 */
-  files: FileProps[];
+  /** 默认文件列表 */
+  defaultFiles?: FileProps[];
   /** 住容器样式 */
   style?: CSSProperties;
   /** 选中的key */
-  selectedKey: string;
+  defaultSelectedKey?: string;
   /** 点击事件 */
-  onClick: (file: FileProps) => void;
+  onClick?: (file: FileProps) => void;
   /** 关闭事件 */
-  onClose: (file: FileProps, index?: number) => void;
+  onClose?: (selectedFile: FileProps) => void;
   /** monaco 属性配置 */
   monacoOptions?: editor.IStandaloneEditorConstructionOptions;
   /** monaco实例 */
@@ -28,9 +28,10 @@ export interface FileEditorProps {
     visible?: (file: FileProps) => boolean;
   }[];
   /** 文件改变钩子 */
-  onChange?: (code: string) => void;
+  onChange?: (code: string, notSaveCount: number) => void;
   /** ctrl + s 保存钩子 */
   onSave?: (code: string) => void;
+  onTabClose?: any;
 }
 
 export interface editorRefInstance {
@@ -40,4 +41,5 @@ export interface editorRefInstance {
     render: () => ReactNode;
   }) => void;
   checkTab: (key: string) => void;
+  getTabs: () => FileProps[];
 }

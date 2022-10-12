@@ -2,7 +2,6 @@ import { FileEditorProps } from './types';
 import HeaderTabs from './components/tabs';
 import Main from './components/main';
 import CreateSpin from '@/compontent/create-spin';
-import { cloneDeep } from 'lodash';
 import { useEffect, useRef, useState, useMemo } from 'react';
 import { FileProps } from '@/file-explorer/types';
 import { uuid } from '@/util';
@@ -25,8 +24,8 @@ const defaultExtra = [
 const prefixCls = 'ide-editor-file-editor';
 
 export default ({
-  files,
-  selectedKey,
+  defaultFiles = [],
+  defaultSelectedKey = '',
   style = {},
   extra = [],
   onClick = () => {},
@@ -44,14 +43,9 @@ export default ({
     getContainer: () => document.querySelector(`.${domKey}`),
     text: '保存中...',
   });
-  const [_selectedKey, setSelectedKey] = useState<string>(selectedKey);
-  useEffect(() => {
-    setSelectedKey(selectedKey);
-  }, [selectedKey]);
-  const [innerFiles, setInnerFiles] = useState<FileProps[]>([]);
-  useEffect(() => {
-    setInnerFiles(cloneDeep(files)); // 剔除引用关系
-  }, [files]);
+  const [reload, setReload] = useState(Math.random());
+  const [files, setFiles] = useState<FileProps[]>(defaultFiles);
+  const [selectedKey, setSelectedKey] = useState<string>(defaultSelectedKey);
   // Ctrl + S
   const keyboardEvent = async (e) => {
     if (
@@ -61,12 +55,12 @@ export default ({
       e.preventDefault();
       spin.open();
       try {
-        const file = innerFiles.find((i) => i.path === _selectedKey);
-        const content = window[`ide-editor-${_selectedKey}`]?.getValue?.();
+        const file = files.find((i) => i.path === selectedKey);
+        const content = window[`ide-editor-${selectedKey}`]?.getValue?.();
         await onSave(content); // 等待外面，通过之后再更新状态
         file.content = content;
         file.notSave = false;
-        setInnerFiles([...innerFiles]);
+        setFiles([...files]);
       } catch (error) {
         console.log(error);
       } finally {
@@ -79,51 +73,58 @@ export default ({
     return () => {
       window.removeEventListener('keydown', keyboardEvent);
     };
-  }, [_selectedKey]);
+  }, [selectedKey]);
   // 扩展相关的 API
   useEffect(() => {
     // 新增tab
-    editorRef.current.addTab = (tab) => {
-      innerFiles.push({
-        type: 'file',
-        extension: '.preview',
-        ...tab,
-      });
-      setInnerFiles([...innerFiles]);
+    editorRef.current.addTab = (tab: any) => {
+      // 不存在就添加
+      if (!files.some((file) => file.path === tab.path)) {
+        files.push({
+          type: 'file',
+          extension: '.preview',
+          ...tab,
+        });
+        setFiles([...files]);
+      }
       setSelectedKey(tab.path);
     };
     // 切换到指定的tab
     editorRef.current.checkTab = (key: string) => {
       setSelectedKey(key);
     };
-  }, [innerFiles]);
+    // 获取所有的Tabs
+    editorRef.current.getTabs = () => {
+      return files;
+    };
+  }, [files]);
   return (
     <div style={style} className={`${prefixCls} show-file-icons ${domKey}`}>
-      {innerFiles.length > 0 ? (
+      {files.length > 0 ? (
         <>
           <HeaderTabs
-            files={innerFiles}
-            selectedKey={_selectedKey}
+            tabs={files}
+            selectedKey={selectedKey}
             onClick={(file) => {
               setSelectedKey(file.path);
               onClick(file);
             }}
-            onClose={(file, index) => {
-              innerFiles.splice(index, 1);
-              setInnerFiles([...innerFiles]);
-              setSelectedKey(innerFiles[0]?.path);
-              onClose(file);
+            onTabClose={(file, index) => {
+              files.splice(index, 1);
+              setFiles([...files]);
+              setSelectedKey(files[0]?.path);
+              onClose(files[0]);
             }}
             extra={[...extra, ...defaultExtra]}
           />
-          {innerFiles.map((file) => {
+          {files.map((file) => {
             return (
               <div
                 key={file.path}
                 style={{
                   width: '100%',
                   height: '100%',
-                  display: file.path === _selectedKey ? 'block' : 'none',
+                  display: file.path === selectedKey ? 'block' : 'none',
                 }}
               >
                 <div className="ide-editor-file-editor-body">
@@ -149,8 +150,8 @@ export default ({
                       onChange={(code) => {
                         // 判断是否修改了
                         file.notSave = code !== file.content;
-                        setInnerFiles([...innerFiles]);
-                        onChange?.(code);
+                        setReload(Math.random());
+                        onChange?.(code, files.filter((i) => i.notSave).length);
                       }}
                     />
                   )}
@@ -160,8 +161,9 @@ export default ({
           })}
         </>
       ) : (
-        <img
+        <image
           width={300}
+          key={reload}
           src="https://img.alicdn.com/imgextra/i1/O1CN01ypboF828fH2ScXohX_!!6000000007959-55-tps-40-40.svg"
         />
       )}

@@ -14,19 +14,12 @@ import filesGit from './files-git.json';
 
 export default () => {
   const explorerRef = React.useRef({});
-  /** 请求数据 */
-  const init = async () => {
-    explorerRef.current.openSpin();
-    await new Promise((res) => setTimeout(res, 1000));
-    explorerRef.current.setFiles(files);
-    explorerRef.current.closeSpin();
-  };
-  React.useEffect(init, []);
+  const [treeData, setTreeData] = React.useState(files);
   return (
     <>
       <button
         onClick={() => {
-          explorerRef.current.setFiles(files);
+          setTreeData(files);
         }}
       >
         普通展示
@@ -34,7 +27,7 @@ export default () => {
       &nbsp;
       <button
         onClick={() => {
-          explorerRef.current.setFiles(filesGit);
+          setTreeData(filesGit);
         }}
       >
         文件打git标记
@@ -42,10 +35,16 @@ export default () => {
       <br />
       <br />
       <FileExplorer
+        treeData={treeData}
         projectName="monaco-editor-compontent"
-        explorerRef={explorerRef}
         style={{ width: 260, height: 400 }}
-        onRefresh={init}
+        explorerRef={explorerRef}
+        onRefresh={async () => {
+          explorerRef.current.openSpin();
+          await new Promise((res) => setTimeout(res, 1000));
+          setTreeData(files);
+          explorerRef.current.closeSpin();
+        }}
         onClick={(file) => {
           console.log('onClick', file);
         }}

@@ -32,7 +32,12 @@ export default ({ gitConfig, style = {} }: MyCodeSpaceProps) => {
         siderKey={siderKey}
         onClick={siderBarClick}
       />
-      <Main gitConfig={gitConfig} collapsed={collapsed} siderKey={siderKey} />
+      <Main
+        setNotSaveCount={setNotSaveCount}
+        gitConfig={gitConfig}
+        collapsed={collapsed}
+        siderKey={siderKey}
+      />
       <Footer
         currentBranch={gitConfig.branch}
         waitCommit={0}

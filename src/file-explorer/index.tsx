@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 import { FileExplorerProps, FileProps } from './types';
 import { useEffect, useRef, useState } from 'react';
 import { RenderFileTree } from './render';
@@ -5,9 +6,9 @@ import { getOpenFiles } from './util';
 import Header from '@/compontent/header';
 import CreateSpin from '@/compontent/create-spin';
 import { getFileByPath, isEmpty, uuid } from '@/util';
-import { cloneDeep } from 'lodash';
 import { useContextMenu } from 'react-contexify';
 import Contexify from './contexify';
+import { cloneDeep } from 'lodash';
 import './index.less';
 
 const prefixCls = 'ide-component-file-explorer';
@@ -25,7 +26,6 @@ export const sleep: any = async () =>
 export default ({
   style = {},
   onClick = () => {},
-  onOpenFileChange = () => {},
   projectName = 'EXPLORER',
   header = true,
   onRefresh,
@@ -35,7 +35,23 @@ export default ({
   explorerRef,
   menus,
   spinWapper = explorerSpin,
+  treeData = [],
 }: FileExplorerProps) => {
+  const editFileRef = useRef<FileProps>();
+  const [files, setFiles] = useState<FileProps[]>([]);
+  useEffect(() => {
+    setFiles(cloneDeep(treeData)); // 剔除引用关系
+  }, [treeData]);
+  const [selectedKey, setSelected] = useState<string>();
+  // 扩展 api
+  useEffect(() => {
+    explorerRef.current.openSpin = spinWapper.open;
+    explorerRef.current.closeSpin = spinWapper.close;
+    explorerRef.current.setSelected = setSelected;
+    explorerRef.current.getOpenFiles = (): FileProps[] => {
+      return getOpenFiles(files);
+    };
+  }, [files]);
   const { show } = useContextMenu({
     id: MENU_ID,
   });
@@ -77,21 +93,6 @@ export default ({
       },
     },
   ];
-  const editFileRef = useRef<FileProps>();
-  const [files, setFiles] = useState<FileProps[]>();
-  const [selectedKey, setSelected] = useState<string>();
-  // 扩展 api
-  useEffect(() => {
-    explorerRef.current.openSpin = spinWapper.open;
-    explorerRef.current.closeSpin = spinWapper.close;
-    explorerRef.current.setSelectedKey = setSelected;
-    explorerRef.current.setFiles = (files) => {
-      setFiles(cloneDeep(files)); // 剔除引用关系
-    };
-    explorerRef.current.getFields = () => {
-      return files;
-    };
-  }, []);
   /** 文件点击 */
   const onFileClick = (file: FileProps) => {
     if (file.type === 'directory') {
@@ -102,7 +103,6 @@ export default ({
     }
     setFiles([...files]);
     onClick(file);
-    onOpenFileChange(getOpenFiles(files));
   };
   // 文件夹全部收起
   const onUnFold = () => {};
@@ -248,9 +248,6 @@ export default ({
       setFiles([...files]);
     }
   };
-  useEffect(() => {
-    onOpenFileChange(getOpenFiles(files));
-  }, []);
   /** 渲染 vNode */
   return (
     <div className={`${prefixCls} show-file-icons`} style={style}>

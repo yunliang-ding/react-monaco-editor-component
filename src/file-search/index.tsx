@@ -20,8 +20,8 @@ export default ({
   onRefresh,
   explorerRef = useRef<any>({}),
   onClick,
-  onOpenFileChange,
   onSearch = sleep,
+  treeData = [],
   exclude,
   include,
 }: FileSearchProps) => {
@@ -57,7 +57,6 @@ export default ({
             onClick() {
               keywordRef.current.value = '';
               keywordRef.current.focus();
-              explorerRef.current.setFiles([]); // clear
             },
           },
         ]}
@@ -83,9 +82,9 @@ export default ({
             width: '100%',
             height: '100%',
           }}
-          onOpenFileChange={onOpenFileChange}
           onRefresh={onRefresh}
           onClick={onClick}
+          treeData={treeData}
           menus={false}
         />
       </div>

@@ -19,11 +19,11 @@ export default ({
   onRefresh,
   explorerRef = useRef<any>({}),
   onClick,
-  onOpenFileChange,
   onCommit = sleep,
   onPush = sleep,
   onPull = sleep,
   onReset = sleep,
+  treeData = [],
 }: GitManageProps) => {
   const messageRef: any = useRef();
   return (
@@ -73,9 +73,9 @@ export default ({
             width: '100%',
             height: '100%',
           }}
-          onOpenFileChange={onOpenFileChange}
           onRefresh={onRefresh}
           onClick={onClick}
+          treeData={treeData}
           menus={[
             {
               key: 'disCard',

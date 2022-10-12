@@ -28,12 +28,10 @@ export interface FileProps {
 }
 
 export interface FileExplorerProps {
-  /** 获取 ref 实例*/
+  /** 获取 ref 实例 */
   explorerRef?: MutableRefObject<explorerRefInstance>;
   /** 主容器样式 */
   style?: CSSProperties;
-  /** 打开的文件 */
-  onOpenFileChange?: (files: FileProps[]) => void;
   /** 文件点击 */
   onClick?: (file: FileProps) => void;
   /** 创建文件或者文件夹 */
@@ -51,12 +49,13 @@ export interface FileExplorerProps {
   /** 右键菜单配置 */
   menus?: any[] | boolean;
   spinWapper?: any;
+  /** 文件树 */
+  treeData?: FileProps[];
 }
 
 export interface explorerRefInstance {
-  getFields: () => FileProps[];
-  setFiles: (files: FileProps[]) => void;
-  setSelectedKey: (path: string) => void;
   openSpin: () => void;
   closeSpin: () => void;
+  getOpenFiles: () => FileProps[];
+  setSelected: (key: string) => void;
 }

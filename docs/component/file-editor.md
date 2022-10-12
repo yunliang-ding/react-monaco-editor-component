@@ -35,8 +35,8 @@ const files = [
 export default () => {
   return (
     <FileEditor
-      files={files}
-      selectedKey={files[0].path}
+      defaultFiles={files}
+      defaultSelectedKey={files[0].path}
       style={{ width: '100%', height: 500 }}
       onClose={(file) => {
         console.log('onClose', file);
@@ -44,8 +44,8 @@ export default () => {
       onClick={(file) => {
         console.log('onClick', file);
       }}
-      onChange={(code) => {
-        console.log('onChange', code);
+      onChange={(code, notSaveCount) => {
+        console.log('onChange', code, notSaveCount);
       }}
       onSave={async (code) => {
         await new Promise((res) => setTimeout(res, 1000));
@@ -92,8 +92,8 @@ const files = [
 export default () => {
   return (
     <FileEditor
-      files={files}
-      selectedKey={files[0].path}
+      defaultFiles={files}
+      defaultSelectedKey={files[0].path}
       style={{ width: '100%', height: 500 }}
       onClose={(file) => {
         console.log('onClose', file);
@@ -145,8 +145,8 @@ const files = [
 export default () => {
   return (
     <FileEditor
-      files={files}
-      selectedKey={files[0].path}
+      defaultFiles={files}
+      defaultSelectedKey={files[0].path}
       style={{ width: '100%', height: 500 }}
       extra={[
         {
@@ -233,8 +233,8 @@ export default () => {
         添加一个自定义渲染
       </button>
       <FileEditor
-        files={files}
-        selectedKey={files[0].path}
+        defaultFiles={files}
+        defaultSelectedKey={files[0].path}
         editorRef={editorRef}
         style={{ width: '100%', height: 500 }}
         onClose={(file) => {
