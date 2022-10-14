@@ -23,6 +23,7 @@ export default (props) => {
       ReactDOM.render(<ComponentApp />, document.querySelector('#app')); // 渲染
     } catch (error) {
       setErrorInfo(String(error));
+      setSpin(false);
     }
   };
   useEffect(() => {
@@ -35,11 +36,11 @@ export default (props) => {
         width: '100%',
         height: '100%',
         background: '#fff',
-        padding: 10,
+        fontSize: 12,
       }}
     >
       {spin ? (
-        <span>loading</span>
+        <span>loading...</span>
       ) : (
         errorInfo && (
           <div className="playground-error-info">
