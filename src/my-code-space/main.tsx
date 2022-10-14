@@ -13,6 +13,7 @@ import {
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { editorRefInstance } from '@/file-editor/types';
 import { getFileByPath } from '@/util';
+import Playground from './playground';
 
 const prefixCls = 'my-code-space-main';
 
@@ -135,7 +136,7 @@ export default ({ gitConfig, collapsed, siderKey, setNotSaveCount }) => {
                     name: `${file.name}.preview`,
                     extension: '.preview',
                     render() {
-                      return 12;
+                      return <Playground code={file.content} />;
                     },
                   });
                 },

@@ -1,3 +1,4 @@
+/* eslint-disable @iceworks/best-practices/recommend-polyfill */
 import { FileProps } from './file-explorer/types';
 
 /** 判断空 */
@@ -51,4 +52,15 @@ export const getCurrentFile = (
       currentFile.file = file;
     }
   }
+};
+
+export const getUrlSearchParams: any = (
+  search = decodeURIComponent(location.hash).split('?')[1],
+) => {
+  const params = {};
+  const searchParams: any = new URLSearchParams(search);
+  searchParams.forEach((value, key) => {
+    params[key] = value;
+  });
+  return params;
 };
