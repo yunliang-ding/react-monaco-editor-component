@@ -8,4 +8,4 @@
 
 - Git 管理工具 `GitManager` 项目的 git 管理工具
 
-- Web 终端服务 `WebTerminal` 项目在线终端调试器
+- MyCodeSpace 配置 项目的 git 信息，即可渲染 轻量级 WEBIDE
