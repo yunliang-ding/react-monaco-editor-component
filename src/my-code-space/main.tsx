@@ -10,7 +10,7 @@ import {
   GitManager,
   FileSearch,
 } from '..';
-import { memo, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { editorRefInstance } from '@/file-editor/types';
 import { getFileByPath } from '@/util';
 
@@ -27,7 +27,11 @@ export default ({ gitConfig, collapsed, siderKey, setNotSaveCount }) => {
   /** 请求数据 */
   const queryTree = async () => {
     explorerRef.current.openSpin();
-    setTreeData(await githubInstance.getTree());
+    if (localStorage.getItem('code-space-tree-data')) {
+      setTreeData(JSON.parse(localStorage.getItem('code-space-tree-data')));
+    } else {
+      setTreeData(await githubInstance.getTree());
+    }
     explorerRef.current.closeSpin();
   };
   useEffect(() => {
@@ -40,6 +44,9 @@ export default ({ gitConfig, collapsed, siderKey, setNotSaveCount }) => {
   useEffect(() => {
     explorerRef.current.setSelected(activeKey);
   }, [activeKey]);
+  useEffect(() => {
+    localStorage.setItem('code-space-tree-data', JSON.stringify(treeData));
+  }, [treeData]);
   return (
     <div className={prefixCls}>
       <SplitPane
@@ -105,14 +112,45 @@ export default ({ gitConfig, collapsed, siderKey, setNotSaveCount }) => {
           </div>
         </div>
         <div className={`${prefixCls}-content`}>
-          <CoreEditor
-            {...{
-              editorRef,
-              setActiveKey,
-              setNotSaveCount,
-              setTreeData,
-              treeData,
-              activeKey,
+          <FileEditor
+            editorRef={editorRef}
+            extra={[
+              {
+                icon: 'codicon codicon-compare-changes',
+                key: 'changes',
+                title: '代码对比',
+                onClick(file) {
+                  editorRef.current.addDiffTab(file);
+                },
+                visible: ({ gitStatus }) => {
+                  return gitStatus !== undefined;
+                },
+              },
+            ]}
+            onClick={(file) => {
+              setActiveKey(file.path);
+            }}
+            onClose={(file) => {
+              setActiveKey(file?.path);
+            }}
+            onChange={(code, notSaveCount) => {
+              setNotSaveCount(notSaveCount);
+            }}
+            onSave={async (code) => {
+              const file = editorRef.current.getCurrentTab();
+              const treeFile = getFileByPath(file.path, treeData);
+              treeFile.content = code;
+              if (code !== treeFile.remoteContent) {
+                treeFile.gitStatus = 'M';
+                setTreeData([...treeData]);
+              } else {
+                delete treeFile.gitStatus;
+                setTreeData([...treeData]);
+              }
+              // 更新 git 状态
+              editorRef.current.updateTabByPath(file.path, {
+                gitStatus: treeFile.gitStatus,
+              });
             }}
           />
         </div>
@@ -120,43 +158,3 @@ export default ({ gitConfig, collapsed, siderKey, setNotSaveCount }) => {
     </div>
   );
 };
-
-const CoreEditor = memo(
-  ({
-    editorRef,
-    setActiveKey,
-    setNotSaveCount,
-    setTreeData,
-    treeData,
-  }: any) => {
-    return (
-      <FileEditor
-        editorRef={editorRef}
-        onClick={(file) => {
-          setActiveKey(file.path);
-        }}
-        onClose={(file) => {
-          setActiveKey(file?.path);
-        }}
-        onChange={(code, notSaveCount) => {
-          setNotSaveCount(notSaveCount);
-        }}
-        onSave={async (code) => {
-          const file = editorRef.current.getCurrentTab();
-          const treeFile = getFileByPath(file.path, treeData);
-          if (code !== treeFile.remoteContent) {
-            treeFile.gitStatus = 'M';
-            setTreeData([...treeData]);
-          } else {
-            delete treeFile.gitStatus;
-            setTreeData([...treeData]);
-          }
-          await new Promise((res) => setTimeout(res, 1000));
-        }}
-      />
-    );
-  },
-  (pre, next) => {
-    return pre.activeKey === next.activeKey;
-  },
-);

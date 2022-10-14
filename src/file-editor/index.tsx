@@ -2,7 +2,7 @@ import { FileEditorProps } from './types';
 import HeaderTabs from './components/tabs';
 import Main from './components/main';
 import CreateSpin from '@/compontent/create-spin';
-import { useEffect, useRef, useState, useMemo } from 'react';
+import { useEffect, useRef, useState, useMemo, memo } from 'react';
 import { FileProps } from '@/file-explorer/types';
 import { uuid } from '@/util';
 import { sleep } from '@/file-explorer';
@@ -89,6 +89,16 @@ export default ({
       }
       setSelectedKey(tab.path);
     };
+    // 新增 Diff 编辑器
+    editorRef.current.addDiffTab = (tabProps) => {
+      files.push({
+        type: 'file',
+        ...tabProps,
+        showDiff: true,
+        path: `~diff/${tabProps.path}`,
+      });
+      setFiles([...files]);
+    };
     // 切换到指定的tab
     editorRef.current.checkTab = (key: string) => {
       setSelectedKey(key);
@@ -101,8 +111,13 @@ export default ({
     editorRef.current.getCurrentTab = () => {
       return files.find((i) => i.path === selectedKey);
     };
-  }, [files]);
-  console.log('render23');
+    // 返回当前编辑的文件
+    editorRef.current.updateTabByPath = (path: string, tab: any) => {
+      const file = files.find((i) => i.path === selectedKey);
+      Object.assign(file, tab);
+      setFiles([...files]);
+    };
+  }, [files, selectedKey]);
   return (
     <div style={style} className={`${prefixCls} show-file-icons ${domKey}`}>
       {files.length > 0 ? (
@@ -137,26 +152,14 @@ export default ({
                     // 自定义渲染
                     file.render(file)
                   ) : (
-                    <Main
-                      id={`ide-editor-${file.path}`}
-                      editorMonacoRef={editorMonacoRef}
-                      mode={file.gitStatus !== undefined ? 'diff' : undefined}
-                      monacoOptions={{
-                        language: {
-                          '.json': 'json',
-                          '.js': 'javascript',
-                          '.ts': 'javascript',
-                          '.tsx': 'javascript',
-                        }[file.extension],
-                        ...monacoOptions,
-                      }}
-                      value={file.content}
-                      originalValue={file.remoteContent}
-                      onChange={(code) => {
-                        // 判断是否修改了
-                        file.notSave = code !== file.content;
-                        setReload(Math.random());
-                        onChange?.(code, files.filter((i) => i.notSave).length);
+                    <CacheEditor
+                      {...{
+                        file,
+                        files,
+                        editorMonacoRef,
+                        monacoOptions,
+                        setReload,
+                        onChange,
                       }}
                     />
                   )}
@@ -175,3 +178,42 @@ export default ({
     </div>
   );
 };
+
+const CacheEditor = memo(
+  ({
+    file,
+    files,
+    editorMonacoRef,
+    monacoOptions,
+    setReload,
+    onChange,
+  }: any) => {
+    return (
+      <Main
+        id={`ide-editor-${file.path}`}
+        editorMonacoRef={editorMonacoRef}
+        mode={file.showDiff ? 'diff' : undefined}
+        monacoOptions={{
+          language: {
+            '.json': 'json',
+            '.js': 'javascript',
+            '.ts': 'javascript',
+            '.tsx': 'javascript',
+          }[file.extension],
+          ...monacoOptions,
+        }}
+        value={file.content}
+        originalValue={file.remoteContent}
+        onChange={(code) => {
+          // 判断是否修改了
+          file.notSave = code !== file.content;
+          setReload(Math.random());
+          onChange?.(code, files.filter((i) => i.notSave).length);
+        }}
+      />
+    );
+  },
+  () => {
+    return true;
+  },
+);

@@ -35,19 +35,20 @@ export interface FileEditorProps {
 }
 
 export interface editorRefInstance {
+  /** 打开一个 Tab */
   addTab: (tabProps: {
     path: string;
     name: string;
-    render: () => ReactNode;
+    render?: () => ReactNode;
   }) => void;
-  addDiffTab: (tabProps: {
-    path: string;
-    name: string;
-    content: string;
-    remoteContent: string;
-    status: string;
-  }) => void;
-  checkTab: (key: string) => void;
+  /** 打开文件对比的 Tab */
+  addDiffTab: (tabProps: FileProps) => void;
+  /** 切换到指定的Tab */
+  checkTab: (path: string) => void;
+  /** 获取所有的Tab */
   getTabs: () => FileProps[];
+  /** 获取当前的Tab */
   getCurrentTab: () => FileProps;
+  /** 更新指定的Tab */
+  updateTabByPath: (path: string, tab: any) => void;
 }

@@ -44,7 +44,7 @@ export default ({
                   className={`${prefix}-tabs-left-item-label${tab.gitStatus}`}
                 >
                   {tab.name}
-                  {tab.gitStatus !== undefined && StageMapping[tab.gitStatus]}
+                  {tab.showDiff && StageMapping[tab.gitStatus]}
                   &nbsp;&nbsp;{tab.gitStatus}
                 </span>
                 {tab.notSave && (

@@ -69,6 +69,7 @@ const files = [
     extension: '.tsx',
     name: 'age.tsx',
     gitStatus: 'M',
+    showDiff: true,
     notSave: false,
     content: `export default () => {
   return 'demo'
@@ -83,6 +84,7 @@ const files = [
     extension: '.json',
     name: 'age.json',
     gitStatus: 'U',
+    showDiff: true,
     notSave: false,
     content: `{
   "name": "123abc"

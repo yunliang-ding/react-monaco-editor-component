@@ -27,6 +27,8 @@ export interface FileProps {
   remotePath?: string;
   /** git文件状态 */
   gitStatus?: 'U' | 'M' | undefined;
+  /** 是否展示 diff 对比 */
+  showDiff?: boolean;
 }
 
 export interface FileExplorerProps {
