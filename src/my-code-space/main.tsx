@@ -10,8 +10,9 @@ import {
   GitManager,
   FileSearch,
 } from '..';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { editorRefInstance } from '@/file-editor/types';
+import { getFileByPath } from '@/util';
 
 const prefixCls = 'my-code-space-main';
 
@@ -104,19 +105,14 @@ export default ({ gitConfig, collapsed, siderKey, setNotSaveCount }) => {
           </div>
         </div>
         <div className={`${prefixCls}-content`}>
-          <FileEditor
-            editorRef={editorRef}
-            onClick={(file) => {
-              setActiveKey(file.path);
-            }}
-            onClose={(file) => {
-              setActiveKey(file?.path);
-            }}
-            onChange={(code, notSaveCount) => {
-              setNotSaveCount(notSaveCount);
-            }}
-            onSave={async (code) => {
-              await new Promise((res) => setTimeout(res, 1000));
+          <CoreEditor
+            {...{
+              editorRef,
+              setActiveKey,
+              setNotSaveCount,
+              setTreeData,
+              treeData,
+              activeKey,
             }}
           />
         </div>
@@ -124,3 +120,43 @@ export default ({ gitConfig, collapsed, siderKey, setNotSaveCount }) => {
     </div>
   );
 };
+
+const CoreEditor = memo(
+  ({
+    editorRef,
+    setActiveKey,
+    setNotSaveCount,
+    setTreeData,
+    treeData,
+  }: any) => {
+    return (
+      <FileEditor
+        editorRef={editorRef}
+        onClick={(file) => {
+          setActiveKey(file.path);
+        }}
+        onClose={(file) => {
+          setActiveKey(file?.path);
+        }}
+        onChange={(code, notSaveCount) => {
+          setNotSaveCount(notSaveCount);
+        }}
+        onSave={async (code) => {
+          const file = editorRef.current.getCurrentTab();
+          const treeFile = getFileByPath(file.path, treeData);
+          if (code !== treeFile.remoteContent) {
+            treeFile.gitStatus = 'M';
+            setTreeData([...treeData]);
+          } else {
+            delete treeFile.gitStatus;
+            setTreeData([...treeData]);
+          }
+          await new Promise((res) => setTimeout(res, 1000));
+        }}
+      />
+    );
+  },
+  (pre, next) => {
+    return pre.activeKey === next.activeKey;
+  },
+);

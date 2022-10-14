@@ -21,10 +21,12 @@ export interface FileProps {
   content?: string;
   /** 自定义渲染 */
   render?: (file: FileProps) => ReactNode;
-  /** 和 git 相关 */
+  /** git 远程代码内容 */
+  remoteContent?: string;
+  /** git 远程路径 */
+  remotePath?: string;
+  /** git文件状态 */
   gitStatus?: 'U' | 'M' | undefined;
-  /** 暂存区文件内容 */
-  stageContent?: string;
 }
 
 export interface FileExplorerProps {

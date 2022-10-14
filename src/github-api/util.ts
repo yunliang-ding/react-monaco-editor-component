@@ -25,6 +25,7 @@ export const loopTree = async (
       status: 'nomal',
       name: item.path,
       path: partent ? partent.path + '/' + item.path : item.path,
+      remotePath: partent ? partent.path + '/' + item.path : item.path,
       type: item.type === 'tree' ? 'directory' : 'file',
       extension: getFileExtension(item.path),
     };
@@ -33,6 +34,7 @@ export const loopTree = async (
       fileItem.size = item.size;
       const content = await request(`${gitUrl}/${fileItem.path}`, 'text');
       fileItem.content = content;
+      fileItem.remoteContent = content;
     }
     if (item.type === 'tree') {
       fileItem.children = await loopTree(await request(item.url), gitUrl, item);

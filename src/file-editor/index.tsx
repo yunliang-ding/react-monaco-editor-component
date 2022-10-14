@@ -97,7 +97,12 @@ export default ({
     editorRef.current.getTabs = () => {
       return files;
     };
+    // 返回当前编辑的文件
+    editorRef.current.getCurrentTab = () => {
+      return files.find((i) => i.path === selectedKey);
+    };
   }, [files]);
+  console.log('render23');
   return (
     <div style={style} className={`${prefixCls} show-file-icons ${domKey}`}>
       {files.length > 0 ? (
@@ -146,7 +151,7 @@ export default ({
                         ...monacoOptions,
                       }}
                       value={file.content}
-                      originalValue={file.stageContent}
+                      originalValue={file.remoteContent}
                       onChange={(code) => {
                         // 判断是否修改了
                         file.notSave = code !== file.content;
@@ -161,8 +166,8 @@ export default ({
           })}
         </>
       ) : (
-        <image
-          width={300}
+        <img
+          style={{ width: 300 }}
           key={reload}
           src="https://img.alicdn.com/imgextra/i1/O1CN01ypboF828fH2ScXohX_!!6000000007959-55-tps-40-40.svg"
         />

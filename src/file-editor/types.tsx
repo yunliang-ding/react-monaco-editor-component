@@ -40,6 +40,14 @@ export interface editorRefInstance {
     name: string;
     render: () => ReactNode;
   }) => void;
+  addDiffTab: (tabProps: {
+    path: string;
+    name: string;
+    content: string;
+    remoteContent: string;
+    status: string;
+  }) => void;
   checkTab: (key: string) => void;
   getTabs: () => FileProps[];
+  getCurrentTab: () => FileProps;
 }

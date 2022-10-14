@@ -1,8 +1,8 @@
 interface DiffTreeMapProps {
   oldPath: string;
-  newPath: string;
+  path: string;
   oldContent: string;
-  newContent: string;
+  content: string;
   status: string;
 }
 export const getDiffTreeMap = () => {
@@ -15,8 +15,13 @@ export const createDiffTreeMap = (
 ) => {
   const treeMap = getDiffTreeMap();
   if (type === 'modify') {
-    if (treeMap[gitDiff.newPath]) {
-      treeMap;
+    if (treeMap[gitDiff.path]) {
+      treeMap[gitDiff.path].content = gitDiff.content; // 更新工作区间内容
+    } else {
+      treeMap[gitDiff.path] = {
+        ...gitDiff,
+        status: 'M',
+      };
     }
   }
 };
