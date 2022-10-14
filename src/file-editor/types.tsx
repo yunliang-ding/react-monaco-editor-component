@@ -28,7 +28,7 @@ export interface FileEditorProps {
     visible?: (file: FileProps) => boolean;
   }[];
   /** 文件改变钩子 */
-  onChange?: (code: string, notSaveCount: number) => void;
+  onChange?: (code: string) => void;
   /** ctrl + s 保存钩子 */
   onSave?: (code: string) => void;
   onTabClose?: any;
@@ -51,4 +51,6 @@ export interface editorRefInstance {
   getCurrentTab: () => FileProps;
   /** 更新指定的Tab */
   updateTabByPath: (path: string, tab: any) => void;
+  /** 返回未保存文件的个数 */
+  getTotalNotSaveCount: () => number;
 }

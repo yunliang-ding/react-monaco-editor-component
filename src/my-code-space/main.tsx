@@ -121,6 +121,7 @@ export default ({ gitConfig, collapsed, siderKey, setNotSaveCount }) => {
                 title: '代码对比',
                 onClick(file) {
                   editorRef.current.addDiffTab(file);
+                  editorRef.current.checkTab(`~diff/${file.path}`);
                 },
                 visible: ({ gitStatus }) => {
                   return gitStatus !== undefined;
@@ -133,10 +134,11 @@ export default ({ gitConfig, collapsed, siderKey, setNotSaveCount }) => {
             onClose={(file) => {
               setActiveKey(file?.path);
             }}
-            onChange={(code, notSaveCount) => {
-              setNotSaveCount(notSaveCount);
+            onChange={(code) => {
+              setNotSaveCount(editorRef.current.getTotalNotSaveCount());
             }}
             onSave={async (code) => {
+              setNotSaveCount(editorRef.current.getTotalNotSaveCount());
               const file = editorRef.current.getCurrentTab();
               const treeFile = getFileByPath(file.path, treeData);
               treeFile.content = code;

@@ -117,6 +117,10 @@ export default ({
       Object.assign(file, tab);
       setFiles([...files]);
     };
+    // 返回未保存的文件个数
+    editorRef.current.getTotalNotSaveCount = () => {
+      return files.filter((i) => i.notSave).length;
+    };
   }, [files, selectedKey]);
   return (
     <div style={style} className={`${prefixCls} show-file-icons ${domKey}`}>
@@ -180,14 +184,7 @@ export default ({
 };
 
 const CacheEditor = memo(
-  ({
-    file,
-    files,
-    editorMonacoRef,
-    monacoOptions,
-    setReload,
-    onChange,
-  }: any) => {
+  ({ file, editorMonacoRef, monacoOptions, setReload, onChange }: any) => {
     return (
       <Main
         id={`ide-editor-${file.path}`}
@@ -208,7 +205,7 @@ const CacheEditor = memo(
           // 判断是否修改了
           file.notSave = code !== file.content;
           setReload(Math.random());
-          onChange?.(code, files.filter((i) => i.notSave).length);
+          onChange(code);
         }}
       />
     );
