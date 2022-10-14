@@ -44,8 +44,12 @@ export default ({
     text: '保存中...',
   });
   const [reload, setReload] = useState(Math.random());
-  const [files, setFiles] = useState<FileProps[]>(defaultFiles);
-  const [selectedKey, setSelectedKey] = useState<string>(defaultSelectedKey);
+  const [files, setFiles] = useState<FileProps[]>(
+    JSON.parse(localStorage.getItem('my-code-space-tabs')) || defaultFiles,
+  );
+  const [selectedKey, setSelectedKey] = useState<string>(
+    localStorage.getItem('my-code-space-selectedKey') || defaultSelectedKey,
+  );
   // Ctrl + S
   const keyboardEvent = async (e) => {
     if (
@@ -75,6 +79,7 @@ export default ({
     };
   }, [selectedKey]);
   // 扩展相关的 API
+  const fristRender = useRef(true);
   useEffect(() => {
     // 新增tab
     editorRef.current.addTab = (tab: any) => {
@@ -121,6 +126,11 @@ export default ({
     editorRef.current.getTotalNotSaveCount = () => {
       return files.filter((i) => i.notSave).length;
     };
+    if (!fristRender.current) {
+      localStorage.setItem('my-code-space-tabs', JSON.stringify(files));
+      localStorage.setItem('my-code-space-selectedKey', selectedKey);
+    }
+    fristRender.current = false;
   }, [files, selectedKey]);
   return (
     <div style={style} className={`${prefixCls} show-file-icons ${domKey}`}>

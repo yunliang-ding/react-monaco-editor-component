@@ -27,11 +27,10 @@ export default ({ gitConfig, collapsed, siderKey, setNotSaveCount }) => {
   /** 请求数据 */
   const queryTree = async () => {
     explorerRef.current.openSpin();
-    if (localStorage.getItem('code-space-tree-data')) {
-      setTreeData(JSON.parse(localStorage.getItem('code-space-tree-data')));
-    } else {
-      setTreeData(await githubInstance.getTree());
-    }
+    setTreeData(
+      JSON.parse(localStorage.getItem('my-code-space-tree-data')) ||
+        (await githubInstance.getTree()),
+    );
     explorerRef.current.closeSpin();
   };
   useEffect(() => {
@@ -40,12 +39,18 @@ export default ({ gitConfig, collapsed, siderKey, setNotSaveCount }) => {
   const querySearch = async () => {};
   const queryGit = async () => {};
   const [treeData, setTreeData] = useState<FileProps[]>([]);
-  const [activeKey, setActiveKey] = useState<string>('');
+  const [activeKey, setActiveKey] = useState<string>(
+    localStorage.getItem('my-code-space-selectedKey') || '',
+  );
   useEffect(() => {
     explorerRef.current.setSelected(activeKey);
   }, [activeKey]);
+  const fristRender = useRef(true);
   useEffect(() => {
-    localStorage.setItem('code-space-tree-data', JSON.stringify(treeData));
+    if (!fristRender.current) {
+      localStorage.setItem('my-code-space-tree-data', JSON.stringify(treeData));
+    }
+    fristRender.current = false;
   }, [treeData]);
   return (
     <div className={prefixCls}>
@@ -138,7 +143,6 @@ export default ({ gitConfig, collapsed, siderKey, setNotSaveCount }) => {
               setNotSaveCount(editorRef.current.getTotalNotSaveCount());
             }}
             onSave={async (code) => {
-              setNotSaveCount(editorRef.current.getTotalNotSaveCount());
               const file = editorRef.current.getCurrentTab();
               const treeFile = getFileByPath(file.path, treeData);
               treeFile.content = code;
@@ -152,7 +156,9 @@ export default ({ gitConfig, collapsed, siderKey, setNotSaveCount }) => {
               // 更新 git 状态
               editorRef.current.updateTabByPath(file.path, {
                 gitStatus: treeFile.gitStatus,
+                notSave: false,
               });
+              setNotSaveCount(editorRef.current.getTotalNotSaveCount());
             }}
           />
         </div>

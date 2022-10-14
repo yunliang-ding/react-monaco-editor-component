@@ -12,7 +12,7 @@ export interface FileProps {
   /** 文件大小 */
   size?: number;
   /** 文件状态 */
-  status?: 'edit' | 'nomal' | 'open' | 'expanded';
+  status?: 'edit' | 'nomal' | 'expanded';
   /** 文件是否未保存 */
   notSave?: boolean;
   /** 文件子节点 */
