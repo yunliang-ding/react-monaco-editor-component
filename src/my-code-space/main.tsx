@@ -119,7 +119,27 @@ export default ({ gitConfig, collapsed, siderKey, setNotSaveCount }) => {
         <div className={`${prefixCls}-content`}>
           <FileEditor
             editorRef={editorRef}
+            openCache
             extra={[
+              {
+                key: 'preview',
+                icon: 'codicon codicon-open-preview',
+                title: '预览',
+                visible(file) {
+                  return file.extension === '.tsx';
+                },
+                onClick(file) {
+                  editorRef.current.addTab({
+                    ...file,
+                    path: `${file.path}.preview`,
+                    name: `${file.name}.preview`,
+                    extension: '.preview',
+                    render() {
+                      return 12;
+                    },
+                  });
+                },
+              },
               {
                 icon: 'codicon codicon-compare-changes',
                 key: 'changes',

@@ -1,5 +1,5 @@
 import { FileProps } from '../file-explorer/types';
-import { CSSProperties, MutableRefObject, ReactNode } from 'react';
+import { CSSProperties, MutableRefObject } from 'react';
 import { editor } from 'monaco-editor';
 
 export interface FileEditorProps {
@@ -32,15 +32,12 @@ export interface FileEditorProps {
   /** ctrl + s 保存钩子 */
   onSave?: (code: string) => void;
   onTabClose?: any;
+  openCache?: boolean;
 }
 
 export interface editorRefInstance {
   /** 打开一个 Tab */
-  addTab: (tabProps: {
-    path: string;
-    name: string;
-    render?: () => ReactNode;
-  }) => void;
+  addTab: (tabProps: FileProps) => void;
   /** 打开文件对比的 Tab */
   addDiffTab: (tabProps: FileProps) => void;
   /** 切换到指定的Tab */

@@ -10,5 +10,5 @@ export const iconMapping = {
   '.py': 'python-lang-file-icon',
   '.md': 'markdown-lang-file-icon',
   '.ignore': 'ignore-lang-file-icon',
-  '.preview': '',
+  '.preview': 'javascriptreact-lang-file-icon',
 };

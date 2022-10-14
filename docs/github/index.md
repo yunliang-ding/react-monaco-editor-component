@@ -16,7 +16,7 @@ import { MyCodeSpace } from 'react-monaco-editor-component';
 export default () => {
   return (
     <MyCodeSpace
-      style={{ width: '100%', height: 600 }}
+      style={{ width: '100%', height: '100vh' }}
       gitConfig={{
         owner: 'yunliang-ding', // 拥有者
         repo: 'demo-github-api', // 项目名

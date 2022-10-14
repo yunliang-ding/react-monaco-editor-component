@@ -220,10 +220,9 @@ export default () => {
       <button
         style={{ marginBottom: 12 }}
         onClick={() => {
-          const key = Math.random();
           editorRef.current.addTab({
-            name: `new-${key}.preview`,
-            path: `src/new-${key}.preview`,
+            name: 'user.tsx.preview',
+            path: 'src/user.tsx.preview',
             render() {
               return (
                 <h2 style={{ color: '#fff' }}>这个是动态添加的自定义渲染</h2>

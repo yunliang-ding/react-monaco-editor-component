@@ -28,6 +28,7 @@ export default ({
   defaultSelectedKey = '',
   style = {},
   extra = [],
+  openCache = false,
   onClick = () => {},
   onClose = () => {},
   onChange = () => {},
@@ -45,10 +46,12 @@ export default ({
   });
   const [reload, setReload] = useState(Math.random());
   const [files, setFiles] = useState<FileProps[]>(
-    JSON.parse(localStorage.getItem('my-code-space-tabs')) || defaultFiles,
+    (openCache && JSON.parse(localStorage.getItem('my-code-space-tabs'))) ||
+      defaultFiles,
   );
   const [selectedKey, setSelectedKey] = useState<string>(
-    localStorage.getItem('my-code-space-selectedKey') || defaultSelectedKey,
+    (openCache && localStorage.getItem('my-code-space-selectedKey')) ||
+      defaultSelectedKey,
   );
   // Ctrl + S
   const keyboardEvent = async (e) => {
@@ -85,11 +88,7 @@ export default ({
     editorRef.current.addTab = (tab: any) => {
       // 不存在就添加
       if (!files.some((file) => file.path === tab.path)) {
-        files.push({
-          type: 'file',
-          extension: '.preview',
-          ...tab,
-        });
+        files.push(tab);
         setFiles([...files]);
       }
       setSelectedKey(tab.path);
@@ -126,7 +125,7 @@ export default ({
     editorRef.current.getTotalNotSaveCount = () => {
       return files.filter((i) => i.notSave).length;
     };
-    if (!fristRender.current) {
+    if (!fristRender.current && openCache) {
       localStorage.setItem('my-code-space-tabs', JSON.stringify(files));
       localStorage.setItem('my-code-space-selectedKey', selectedKey);
     }
