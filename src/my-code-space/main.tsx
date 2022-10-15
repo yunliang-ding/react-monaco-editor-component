@@ -122,6 +122,7 @@ export default ({ gitConfig, collapsed, siderKey, setNotSaveCount }) => {
           <FileEditor
             editorRef={editorRef}
             openCache
+            treeData={treeData}
             extra={[
               {
                 key: 'preview',
