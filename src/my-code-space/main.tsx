@@ -137,8 +137,8 @@ export default ({ gitConfig, collapsed, siderKey, setNotSaveCount }) => {
                   }).open({
                     drawerProps: {
                       style: {
-                        top: 30,
-                        height: 'calc(100vh - 50px)',
+                        top: 36,
+                        height: 'calc(100vh - 58px)',
                       },
                       headerStyle: {
                         display: 'none',
