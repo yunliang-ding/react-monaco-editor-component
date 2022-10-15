@@ -42,7 +42,7 @@ export const getCurrentFile = (
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
     if (file.type === 'directory') {
-      getCurrentFile(file.children, path, currentFile, custom);
+      getCurrentFile(path, file.children, currentFile, custom);
     }
     if (typeof custom === 'function') {
       if (custom(file)) {
