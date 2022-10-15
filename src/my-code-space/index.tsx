@@ -1,5 +1,5 @@
-import { useState, CSSProperties, useEffect } from 'react';
-import { CreateModal } from 'react-core-form';
+import { useState, CSSProperties } from 'react';
+import { CardForm } from 'react-core-form';
 import { GitHubApiProps } from '../github-api';
 import Sider from './sider';
 import Footer from './footer';
@@ -22,7 +22,9 @@ export default ({
   style = {},
 }: MyCodeSpaceProps) => {
   const [innerGitConfig, setInnerGitConfig] = useState(gitConfig);
-  const [showCodeSpace, setShowCodeSpace] = useState<boolean>(false);
+  const [showCodeSpace, setShowCodeSpace] = useState<boolean>(
+    gitConfig.token !== '',
+  );
   const [siderKey, setSiderKey] = useState<string>('Code');
   const [notSaveCount, setNotSaveCount] = useState<number>(0);
   const [collapsed, setCollapsed] = useState(false);
@@ -35,40 +37,6 @@ export default ({
     }
     setSiderKey(key);
   };
-  useEffect(() => {
-    CreateModal({
-      title: '设置项目信息',
-    }).open({
-      initialValues: innerGitConfig,
-      onSubmit: (values) => {
-        setInnerGitConfig(values);
-        setShowCodeSpace(true);
-      },
-      schema: [
-        {
-          type: 'Input',
-          label: '项目拥有着',
-          name: 'owner',
-        },
-        {
-          type: 'Input',
-          label: '项目名称',
-          name: 'repo',
-        },
-        {
-          type: 'Input',
-          label: '项目分支',
-          name: 'branch',
-        },
-        {
-          type: 'Input',
-          label: 'token',
-          name: 'token',
-          extra: '系统承诺不会对用户token做任何保留',
-        },
-      ],
-    });
-  }, []);
   return showCodeSpace ? (
     <div className="my-code-space" style={style}>
       <Sider
@@ -89,5 +57,39 @@ export default ({
         onPush={() => {}}
       />
     </div>
-  ) : null;
+  ) : (
+    <CardForm
+      {...{
+        title: '设置项目信息',
+        initialValues: innerGitConfig,
+        onSubmit: (values) => {
+          setInnerGitConfig(values);
+          setShowCodeSpace(true);
+        },
+        schema: [
+          {
+            type: 'Input',
+            label: '项目拥有着',
+            name: 'owner',
+          },
+          {
+            type: 'Input',
+            label: '项目名称',
+            name: 'repo',
+          },
+          {
+            type: 'Input',
+            label: '项目分支',
+            name: 'branch',
+          },
+          {
+            type: 'Input',
+            label: 'token',
+            name: 'token',
+            extra: '系统承诺不会对用户token做任何保留',
+          },
+        ],
+      }}
+    />
+  );
 };

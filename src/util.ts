@@ -29,13 +29,13 @@ export const getFileByPath = (path: string, files: FileProps[], custom?) => {
   const currentFile = {
     file: undefined,
   };
-  getCurrentFile(files, path, currentFile, custom);
+  getCurrentFile(path, files, currentFile, custom);
   return currentFile.file;
 };
 /** 获取当前选中的文件 */
 export const getCurrentFile = (
-  files: FileProps[],
   path,
+  files: FileProps[],
   currentFile,
   custom,
 ) => {

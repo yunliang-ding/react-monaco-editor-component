@@ -14,6 +14,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { editorRefInstance } from '@/file-editor/types';
 import { getFileByPath } from '@/util';
 import Playground from './playground';
+import { CreateDrawer } from 'react-core-form';
 
 const prefixCls = 'my-code-space-main';
 
@@ -130,11 +131,21 @@ export default ({ gitConfig, collapsed, siderKey, setNotSaveCount }) => {
                   return file.extension === '.tsx';
                 },
                 onClick(file) {
-                  editorRef.current.addTab({
-                    ...file,
-                    path: `${file.path}.preview`,
-                    name: `${file.name}.preview`,
-                    extension: '.preview',
+                  CreateDrawer({
+                    footer: false,
+                  }).open({
+                    drawerProps: {
+                      style: {
+                        top: 30,
+                        height: 'calc(100vh - 50px)',
+                      },
+                      headerStyle: {
+                        display: 'none',
+                      },
+                      bodyStyle: {
+                        padding: 0,
+                      },
+                    },
                     render() {
                       return <Playground code={file.content} />;
                     },

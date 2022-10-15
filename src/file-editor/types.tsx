@@ -33,6 +33,7 @@ export interface FileEditorProps {
   onSave?: (code: string) => void;
   onTabClose?: any;
   openCache?: boolean;
+  treeData?: any;
 }
 
 export interface editorRefInstance {

@@ -98,7 +98,6 @@ export default ({
     if (file.type === 'directory') {
       file.status = file.status === 'expanded' ? 'nomal' : 'expanded';
     } else {
-      file.status = 'open';
       setSelected(file.path);
     }
     setFiles([...files]);

@@ -38,6 +38,7 @@ export default ({
   editorRef = useRef({
     addTab: {},
   } as any),
+  treeData = [],
 }: FileEditorProps) => {
   const domKey = useMemo(() => `class-${uuid(12)}`, []);
   const spin = CreateSpin({
@@ -80,7 +81,7 @@ export default ({
     return () => {
       window.removeEventListener('keydown', keyboardEvent);
     };
-  }, [selectedKey]);
+  }, [selectedKey, treeData]);
   // 扩展相关的 API
   const fristRender = useRef(true);
   useEffect(() => {
