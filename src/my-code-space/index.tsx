@@ -1,5 +1,4 @@
 import { useState, CSSProperties } from 'react';
-import { CardForm } from 'react-core-form';
 import { GitHubApiProps } from '../github-api';
 import Sider from './sider';
 import Footer from './footer';
@@ -21,10 +20,6 @@ export default ({
   },
   style = {},
 }: MyCodeSpaceProps) => {
-  const [innerGitConfig, setInnerGitConfig] = useState(gitConfig);
-  const [showCodeSpace, setShowCodeSpace] = useState<boolean>(
-    gitConfig.token !== '',
-  );
   const [siderKey, setSiderKey] = useState<string>('Code');
   const [notSaveCount, setNotSaveCount] = useState<number>(0);
   const [diffCount, setDiffCount] = useState<number>(0);
@@ -38,7 +33,7 @@ export default ({
     }
     setSiderKey(key);
   };
-  return showCodeSpace ? (
+  return (
     <div className="my-code-space" style={style}>
       <Sider
         diffCount={diffCount}
@@ -47,47 +42,13 @@ export default ({
         onClick={siderBarClick}
       />
       <Main
+        gitConfig={gitConfig}
         setNotSaveCount={setNotSaveCount}
-        gitConfig={innerGitConfig}
         collapsed={collapsed}
         siderKey={siderKey}
         setDiffCount={setDiffCount}
       />
-      <Footer currentBranch={innerGitConfig.branch} diffCount={diffCount} />
+      <Footer currentBranch={gitConfig.branch} diffCount={diffCount} />
     </div>
-  ) : (
-    <CardForm
-      {...{
-        title: '设置项目信息',
-        initialValues: innerGitConfig,
-        onSubmit: (values) => {
-          setInnerGitConfig(values);
-          setShowCodeSpace(true);
-        },
-        schema: [
-          {
-            type: 'Input',
-            label: '项目拥有着',
-            name: 'owner',
-          },
-          {
-            type: 'Input',
-            label: '项目名称',
-            name: 'repo',
-          },
-          {
-            type: 'Input',
-            label: '项目分支',
-            name: 'branch',
-          },
-          {
-            type: 'Input',
-            label: 'token',
-            name: 'token',
-            extra: '系统承诺不会对用户token做任何保留',
-          },
-        ],
-      }}
-    />
   );
 };
