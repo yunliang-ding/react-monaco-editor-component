@@ -53,11 +53,7 @@ export default ({
         siderKey={siderKey}
         setDiffCount={setDiffCount}
       />
-      <Footer
-        currentBranch={innerGitConfig.branch}
-        waitCommit={0}
-        onPush={() => {}}
-      />
+      <Footer currentBranch={innerGitConfig.branch} diffCount={diffCount} />
     </div>
   ) : (
     <CardForm
