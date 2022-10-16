@@ -13,12 +13,7 @@ const close = () => {
 };
 
 const SpinComponent = ({ text = '加载中...' }) => {
-  return (
-    <div className="create-spin-loading">
-      <div className="create-spin-loading-content">{text}</div>
-      <div className="create-spin-loading-mask" />
-    </div>
-  );
+  return <div className="create-spin-loading" />;
 };
 
 const CreateSpin = ({ getContainer, ...props }: CreateSpinProps) => {

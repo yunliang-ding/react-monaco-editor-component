@@ -13,32 +13,16 @@ nav:
 import React from 'react';
 import { MyCodeSpace } from 'react-monaco-editor-component';
 
-const getUrlSearchParams: any = (
-  search = decodeURIComponent(location.hash).split('?')[1],
-) => {
-  const params = {};
-  const searchParams: any = new URLSearchParams(search);
-  searchParams.forEach((value, key) => {
-    params[key] = value;
-  });
-  return params;
-};
-
 export default () => {
-  const searchParams = getUrlSearchParams();
-  let gitConfig = {
-    owner: 'yunliang-ding', // 拥有者
-    repo: 'demo-github-api', // 项目名
-    branch: 'main', // 分支
-    token: 'ghp_xXydYL03OBhChcreE3w0mSmWAy9VQ1lln1OXMQ3VHxTh', // token、可在 github 上生成
-  };
-  if (searchParams.token) {
-    gitConfig = searchParams;
-  }
   return (
     <MyCodeSpace
       style={{ width: '100%', height: '100vh' }}
-      gitConfig={gitConfig}
+      gitConfig={{
+        owner: 'yunliang-ding', // 拥有者
+        repo: 'demo-github-api', // 项目名
+        branch: 'main', // 分支
+        token: 'ghp_xXydYL03OBhChcreE3w0mSmWAy9VQ1lln1OXMQ3VHxTh', // token、可在 github 上生成
+      }}
     />
   );
 };

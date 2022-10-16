@@ -55,7 +55,6 @@ export const labelRender = (file, onAddDone, renameFileDone, prefixCls) => {
         width: '100%',
         outline: '1px solid #1890ff',
         color: '#fff',
-        fontFamily: 'monaco',
       }}
     />
   ) : (
