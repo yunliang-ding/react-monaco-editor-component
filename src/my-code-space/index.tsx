@@ -27,6 +27,7 @@ export default ({
   );
   const [siderKey, setSiderKey] = useState<string>('Code');
   const [notSaveCount, setNotSaveCount] = useState<number>(0);
+  const [diffCount, setDiffCount] = useState<number>(0);
   const [collapsed, setCollapsed] = useState(false);
   // 侧边栏点击
   const siderBarClick = (key) => {
@@ -40,7 +41,7 @@ export default ({
   return showCodeSpace ? (
     <div className="my-code-space" style={style}>
       <Sider
-        diffLength={0}
+        diffCount={diffCount}
         notSaveCount={notSaveCount}
         siderKey={siderKey}
         onClick={siderBarClick}
@@ -50,6 +51,7 @@ export default ({
         gitConfig={innerGitConfig}
         collapsed={collapsed}
         siderKey={siderKey}
+        setDiffCount={setDiffCount}
       />
       <Footer
         currentBranch={innerGitConfig.branch}

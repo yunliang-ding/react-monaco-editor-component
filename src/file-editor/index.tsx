@@ -96,13 +96,18 @@ export default ({
     };
     // 新增 Diff 编辑器
     editorRef.current.addDiffTab = (tabProps) => {
-      files.push({
+      const tab = {
         type: 'file',
         ...tabProps,
         showDiff: true,
         path: `~diff/${tabProps.path}`,
-      });
-      setFiles([...files]);
+      };
+      // 不存在就添加
+      if (!files.some((file) => file.path === tab.path)) {
+        files.push(tab);
+        setFiles([...files]);
+      }
+      setSelectedKey(tab.path);
     };
     // 切换到指定的tab
     editorRef.current.checkTab = (key: string) => {

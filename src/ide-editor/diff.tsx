@@ -16,11 +16,10 @@ const defaultOptions: editor.IStandaloneDiffEditorConstructionOptions = {
   theme: 'vs-dark',
   selectOnLineNumbers: true,
   automaticLayout: true,
-  fontFamily: 'monaco',
   readOnly: true,
   renderSideBySide: true,
   fontSize: 14,
-  fontWeight: '600',
+  fontWeight: '500',
   minimap: {
     enabled: false,
   },

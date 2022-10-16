@@ -1,27 +1,24 @@
-interface DiffTreeMapProps {
-  oldPath: string;
-  path: string;
-  oldContent: string;
-  content: string;
-  status: string;
-}
-export const getDiffTreeMap = () => {
-  return JSON.parse(localStorage.getItem('diffTreeMap') || '{}');
+import { FileProps } from '..';
+
+/** 获取 diff 树 */
+export const getDiffTreeData = (treeData: FileProps[]) => {
+  const diffTree = {
+    data: [],
+  };
+  getDiffTreeDataByLoop(treeData, diffTree.data);
+  return diffTree.data;
 };
 
-export const createDiffTreeMap = (
-  gitDiff: DiffTreeMapProps,
-  type: 'modify' | 'rename' | 'create' | 'delete',
-) => {
-  const treeMap = getDiffTreeMap();
-  if (type === 'modify') {
-    if (treeMap[gitDiff.path]) {
-      treeMap[gitDiff.path].content = gitDiff.content; // 更新工作区间内容
-    } else {
-      treeMap[gitDiff.path] = {
-        ...gitDiff,
-        status: 'M',
-      };
+export const getDiffTreeDataByLoop = (treeData: FileProps[], diffTree) => {
+  for (let i = 0; i < treeData.length; i++) {
+    const item = treeData[i];
+    if (item.type === 'directory') {
+      getDiffTreeDataByLoop(item.children, diffTree);
+    } else if (item.gitStatus !== undefined) {
+      diffTree.push({
+        ...item,
+        showDiff: true,
+      });
     }
   }
 };

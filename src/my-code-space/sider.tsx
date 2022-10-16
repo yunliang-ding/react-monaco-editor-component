@@ -1,6 +1,6 @@
 const prefixCls = 'my-code-space-sider';
 
-export default ({ notSaveCount, diffLength, siderKey, onClick }) => {
+export default ({ notSaveCount, diffCount, siderKey, onClick }) => {
   // 侧边栏操作
   const siderList = [
     {
@@ -33,8 +33,8 @@ export default ({ notSaveCount, diffLength, siderKey, onClick }) => {
             }}
           >
             <i className={item.icon} />
-            {item.title === 'Git' && diffLength > 0 && (
-              <span className={`${prefixCls}-item-badge`}>{diffLength}</span>
+            {item.title === 'Git' && diffCount > 0 && (
+              <span className={`${prefixCls}-item-badge`}>{diffCount}</span>
             )}
             {item.title === 'Code' && notSaveCount > 0 && (
               <span className={`${prefixCls}-item-badge`}>{notSaveCount}</span>

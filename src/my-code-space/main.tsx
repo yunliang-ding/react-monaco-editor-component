@@ -15,10 +15,17 @@ import { editorRefInstance } from '@/file-editor/types';
 import { getFileByPath } from '@/util';
 import Playground from './playground';
 import { CreateDrawer } from 'react-core-form';
+import { getDiffTreeData } from './util';
 
 const prefixCls = 'my-code-space-main';
 
-export default ({ gitConfig, collapsed, siderKey, setNotSaveCount }) => {
+export default ({
+  gitConfig,
+  collapsed,
+  siderKey,
+  setNotSaveCount,
+  setDiffCount,
+}) => {
   const explorerRef = useRef<explorerRefInstance>({} as any);
   const explorerGitRef = useRef<explorerRefInstance>({} as any);
   const explorerSearchRef = useRef<explorerRefInstance>({} as any);
@@ -53,6 +60,8 @@ export default ({ gitConfig, collapsed, siderKey, setNotSaveCount }) => {
       localStorage.setItem('my-code-space-tree-data', JSON.stringify(treeData));
     }
     fristRender.current = false;
+    // 同步 diff 个数
+    setDiffCount(getDiffTreeData(treeData).length);
   }, [treeData]);
   return (
     <div className={prefixCls}>
@@ -116,9 +125,10 @@ export default ({ gitConfig, collapsed, siderKey, setNotSaveCount }) => {
           >
             <GitManager
               explorerRef={explorerGitRef}
+              treeData={getDiffTreeData(treeData)}
               onRefresh={queryGit}
               onClick={(file) => {
-                console.log('onClick', file);
+                editorRef.current.addDiffTab(file);
               }}
             />
           </div>
@@ -164,7 +174,6 @@ export default ({ gitConfig, collapsed, siderKey, setNotSaveCount }) => {
                 title: '代码对比',
                 onClick(file) {
                   editorRef.current.addDiffTab(file);
-                  editorRef.current.checkTab(`~diff/${file.path}`);
                 },
                 visible: ({ gitStatus }) => {
                   return gitStatus !== undefined;
