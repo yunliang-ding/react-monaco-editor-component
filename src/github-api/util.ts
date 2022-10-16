@@ -4,11 +4,12 @@
 /* eslint-disable @iceworks/best-practices/recommend-polyfill */
 import { FileProps } from '@/file-explorer/types';
 import request from './request';
-
+import { fromBase64 } from 'js-base64';
 /** 递归节点 */
 export const loopTree = async (
   tree: any[],
   gitUrl,
+  getContent,
   partent?,
 ): Promise<FileProps[]> => {
   const arr = [];
@@ -32,12 +33,19 @@ export const loopTree = async (
     if (item.type === 'blob') {
       fileItem.extension = getFileExtension(fileItem.path);
       fileItem.size = item.size;
-      const content = await request(`${gitUrl}/${fileItem.path}`, 'text');
-      fileItem.content = content;
-      fileItem.remoteContent = content;
+      const {
+        data: { content },
+      } = await getContent(item.sha);
+      fileItem.content = fromBase64(content);
+      fileItem.remoteContent = fromBase64(content);
     }
     if (item.type === 'tree') {
-      fileItem.children = await loopTree(await request(item.url), gitUrl, item);
+      fileItem.children = await loopTree(
+        await request(item.url),
+        gitUrl,
+        getContent,
+        item,
+      );
     }
     arr.push(fileItem);
   }

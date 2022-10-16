@@ -15,6 +15,12 @@ export default {
     const octokit = new Octokit({
       auth: token.replace('_xXydYL03', '_'),
     });
+    /** 获取远程文件的内容 */
+    const getContent = async (content: string) => {
+      return octokit.request(
+        `GET /repos/${owner}/${repo}/git/blobs/${content}`,
+      );
+    };
     return {
       /** 获取远程树节点 */
       getTree: async () => {
@@ -24,14 +30,11 @@ export default {
         return loopTree(
           data.tree,
           `https://raw.githubusercontent.com/${owner}/${repo}/${branch}`,
+          getContent,
         );
       },
       /** 获取远程文件的内容 */
-      getContent: async (content: string) => {
-        return octokit.request(
-          `GET /repos/${owner}/${repo}/git/blobs/${content}`,
-        );
-      },
+      getContent,
       /** 创建水滴 */
       createNewFile: async (content: string) => {
         return await octokit.request(`POST /repos/${owner}/${repo}/git/blobs`, {
