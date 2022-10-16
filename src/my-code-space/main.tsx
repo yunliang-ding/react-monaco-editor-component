@@ -15,7 +15,7 @@ import { editorRefInstance } from '@/file-editor/types';
 import { getFileByPath } from '@/util';
 import Playground from './playground';
 import { CreateDrawer } from 'react-core-form';
-import { getDiffTreeData } from './util';
+import { commitAndPushCode, getDiffTreeData } from './util';
 
 const prefixCls = 'my-code-space-main';
 
@@ -38,7 +38,7 @@ export default ({
     explorerRef.current.openSpin();
     setTreeData(
       JSON.parse(localStorage.getItem('my-code-space-tree-data')) ||
-        (await githubInstance.getTree()),
+        (await githubInstance.getTreeAndContent()),
     );
     explorerRef.current.closeSpin();
   };
@@ -127,6 +127,30 @@ export default ({
               explorerRef={explorerGitRef}
               treeData={getDiffTreeData(treeData)}
               onRefresh={queryGit}
+              onCommit={async (message, diffTree) => {
+                try {
+                  await commitAndPushCode(message, diffTree, githubInstance);
+                  // 同步本地文件
+                  getDiffTreeData(treeData, false).forEach((item) => {
+                    item.remoteContent = item.content;
+                    item.remotePath = item.path;
+                    delete item.gitStatus;
+                    // 更新 Tab
+                    editorRef.current.updateTabByPath(item.path, {
+                      remoteContent: item.content,
+                      gitStatus: undefined,
+                    });
+                    // 更新 Diff Tab
+                    editorRef.current.updateTabByPath(`~diff/${item.path}`, {
+                      remoteContent: item.content,
+                      gitStatus: undefined,
+                    });
+                  });
+                  setTreeData([...treeData]);
+                } catch (error) {
+                  alert('代码提交失败');
+                }
+              }}
               onClick={(file) => {
                 editorRef.current.addDiffTab(file);
               }}

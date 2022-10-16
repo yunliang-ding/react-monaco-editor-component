@@ -15,21 +15,12 @@ export default {
     const octokit = new Octokit({
       auth: token.replace('_xXydYL03', '_'),
     });
-    /** 获取远程文件的内容 */
+    const getTree = async () => {
+      return octokit.request(`GET /repos/${owner}/${repo}/git/trees/${branch}`);
+    };
     const getContent = async (content: string) => {
       return octokit.request(
         `GET /repos/${owner}/${repo}/git/blobs/${content}`,
-      );
-    };
-    /** 获取远程树节点 */
-    const getTree = async () => {
-      const { data } = await octokit.request(
-        `GET /repos/${owner}/${repo}/git/trees/${branch}`,
-      );
-      return loopTree(
-        data.tree,
-        `https://raw.githubusercontent.com/${owner}/${repo}/${branch}`,
-        getContent,
       );
     };
     const createNewFile = async (content: string) => {
@@ -39,11 +30,11 @@ export default {
     };
     const createNewTree = async (base_tree: string, treeList: any[]) => {
       return octokit.request(`POST /repos/${owner}/${repo}/git/trees`, {
-        tree: treeList,
         base_tree,
+        tree: treeList,
       });
     };
-    const commitNewTree = async ({ message, tree }) => {
+    const commitAndPushNewTree = async ({ message, tree }) => {
       // step1: 获取 parents sha
       const res1: any = await octokit.request(
         `GET /repos/${owner}/${repo}/git/refs/heads/${branch}`,
@@ -65,6 +56,16 @@ export default {
         },
       );
     };
+    const getTreeAndContent = async () => {
+      const { data } = await octokit.request(
+        `GET /repos/${owner}/${repo}/git/trees/${branch}`,
+      );
+      return loopTree(
+        data.tree,
+        `https://raw.githubusercontent.com/${owner}/${repo}/${branch}`,
+        getContent,
+      );
+    };
     return {
       getTree,
       /** 获取远程文件的内容 */
@@ -74,7 +75,9 @@ export default {
       /** 创建树 */
       createNewTree,
       /** 提交树 */
-      commitNewTree,
+      commitAndPushNewTree,
+      /** 递归获取树内容 */
+      getTreeAndContent,
     };
   },
 };

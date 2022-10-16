@@ -1,8 +1,8 @@
-import { FileExplorerProps } from '../file-explorer/types';
+import { FileExplorerProps, FileProps } from '../file-explorer/types';
 
 export interface GitManageProps extends FileExplorerProps {
   /** 提交 */
-  onCommit?: (message: string) => any;
+  onCommit?: (message: string, diffTree: FileProps[]) => any;
   /** 推送 */
   onPush?: () => any;
   /** 更新 */

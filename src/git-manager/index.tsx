@@ -20,7 +20,6 @@ export default ({
   explorerRef = useRef<any>({}),
   onClick,
   onCommit = sleep,
-  onPush = sleep,
   onPull = sleep,
   onReset = sleep,
   treeData = [],
@@ -39,9 +38,10 @@ export default ({
                 const message = messageRef.current.value;
                 if (!isEmpty(message)) {
                   spin.open({
-                    text: '提交中...',
+                    text: '提交并推送中...',
                   });
-                  await onCommit(message);
+                  await onCommit(message, treeData);
+                  messageRef.current.value = '';
                 }
               } catch (error) {
                 console.log(error);

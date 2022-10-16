@@ -43,14 +43,18 @@ const githubInstance = GithubApi.create({
 });
 ```
 
-### 获取项目目录
+### 获取项目完整目录结构
+
+```ts
+githubInstance.getTreeAndContent();
+```
+
+### 创建文件
 
 ```ts
 // 可返回 sha1
 githubInstance.getTree();
 ```
-
-### 创建文件
 
 ```ts
 // 可返回 sha2
@@ -71,10 +75,10 @@ githubInstance.createNewTree(sha1, [
 ]);
 ```
 
-### 提交树
+### 提交并且推送树
 
 ```ts
-githubInstance.commitNewTree({
+githubInstance.commitAndPushNewTree({
   message: '备注信息',
   tree: sha3,
 });

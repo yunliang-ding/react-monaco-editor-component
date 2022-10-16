@@ -122,8 +122,8 @@ export default ({
       return files.find((i) => i.path === selectedKey);
     };
     // 返回当前编辑的文件
-    editorRef.current.updateTabByPath = (path: string, tab: any) => {
-      const file = files.find((i) => i.path === selectedKey);
+    editorRef.current.updateTabByPath = (path, tab: any) => {
+      const file = files.find((i) => i.path === path);
       Object.assign(file, tab);
       setFiles([...files]);
     };
