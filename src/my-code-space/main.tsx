@@ -80,6 +80,11 @@ export default ({ gitConfig, collapsed, siderKey, setNotSaveCount }) => {
                 if (file.type === 'file') {
                   setActiveKey(file.path);
                   editorRef.current.addTab(file as any);
+                } else {
+                  const treeFile = getFileByPath(file.path, treeData);
+                  treeFile.status =
+                    treeFile.status === 'expanded' ? 'nomal' : 'expanded';
+                  setTreeData([...treeData]);
                 }
               }}
               onCreateFile={async (file) => {
