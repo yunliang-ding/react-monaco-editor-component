@@ -124,8 +124,10 @@ export default ({
     // 返回当前编辑的文件
     editorRef.current.updateTabByPath = (path, tab: any) => {
       const file = files.find((i) => i.path === path);
-      Object.assign(file, tab);
-      setFiles([...files]);
+      if (file) {
+        Object.assign(file, tab);
+        setFiles([...files]);
+      }
     };
     // 返回未保存的文件个数
     editorRef.current.getTotalNotSaveCount = () => {

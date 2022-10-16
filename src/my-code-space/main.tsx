@@ -229,6 +229,11 @@ export default ({
                 gitStatus: treeFile.gitStatus,
                 notSave: false,
               });
+              // 更新 Diff git
+              editorRef.current.updateTabByPath(`~diff/${file.path}`, {
+                content: file.content,
+                gitStatus: treeFile.gitStatus,
+              });
               setNotSaveCount(editorRef.current.getTotalNotSaveCount());
             }}
           />

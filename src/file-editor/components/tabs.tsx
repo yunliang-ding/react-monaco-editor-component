@@ -4,11 +4,6 @@ import { FileProps } from '@/file-explorer/types';
 
 const prefix = 'ide-editor-file-editor-header';
 
-const StageMapping = {
-  M: ' (Working Tree)',
-  U: ' (Unstracked)',
-};
-
 export default ({
   tabs = [],
   selectedKey,
@@ -26,7 +21,7 @@ export default ({
     <div className="ide-editor-file-editor-header">
       <div className={`${prefix}-tabs`}>
         <div className={`${prefix}-tabs-left`}>
-          {tabs.map((tab, index) => {
+          {tabs.map((tab: FileProps, index) => {
             return (
               <div
                 key={tab.path}
@@ -44,7 +39,7 @@ export default ({
                   className={`${prefix}-tabs-left-item-label${tab.gitStatus}`}
                 >
                   {tab.name}
-                  {tab.showDiff && StageMapping[tab.gitStatus]}
+                  {tab.path.startsWith('~diff/') && ' (Working Tree)'}
                   &nbsp;&nbsp;{tab.gitStatus}
                 </span>
                 {tab.notSave && (
