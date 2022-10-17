@@ -7,7 +7,7 @@ export default ({ currentBranch, diffCount = 0 }) => {
       </div>
       <div className="my-code-space-footer-action">
         <div className="codicon codicon-git-branch" />
-        <div>
+        <div style={{ display: 'flex' }}>
           {currentBranch}
           {diffCount > 0 && <sup>&nbsp;*</sup>}
         </div>
