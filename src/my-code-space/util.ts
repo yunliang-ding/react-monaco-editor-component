@@ -9,13 +9,17 @@ export const getDiffTree = (): FileProps[] => {
 
 // 本地存 diff 信息
 export const setDiffTree = (treeData) => {
+  const data = getDiffTree();
   const diffTree = {
     data: [],
   };
   setDiffTreeDataByLoop(treeData, diffTree.data);
   localStorage.setItem(
     'my-code-space-diff-tree',
-    JSON.stringify(diffTree.data),
+    JSON.stringify([
+      ...diffTree.data,
+      ...data.filter((i) => i.gitStatus === 'D'),
+    ]),
   );
 };
 
@@ -56,7 +60,9 @@ export const commitAndPushCode = async (
     const item = diffTree[i];
     const {
       data: { sha: sha2 },
-    } = await githubInstance.createNewFile(item.content);
+    } = await (item.gitStatus === 'D'
+      ? githubInstance.deleteFile(item.path)
+      : githubInstance.createNewFile(item.content));
     diffFileSha.push({
       path: item.path,
       mode: '100644',

@@ -109,7 +109,12 @@ export default ({
                 await new Promise((res) => setTimeout(res, 1000));
               }}
               onDeleteFile={async (file, files) => {
-                addDiffTreeFile(file);
+                if (file.gitStatus !== 'U') {
+                  addDiffTreeFile({
+                    ...file,
+                    gitStatus: 'D',
+                  });
+                }
                 await new Promise((res) => setTimeout(res, 1000));
                 setTreeData([...files]);
               }}

@@ -29,6 +29,7 @@ export interface FileProps {
   gitStatus?: 'U' | 'M' | 'D' | undefined;
   /** 是否展示 diff 对比 */
   showDiff?: boolean;
+  sha?: string;
 }
 
 export interface FileExplorerProps {

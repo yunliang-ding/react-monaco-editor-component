@@ -23,12 +23,14 @@ export default {
         `GET /repos/${owner}/${repo}/git/blobs/${content}`,
       );
     };
-    const createNewFile = async (content: string, type = 'POST') => {
+    const createNewFile = async (content: string) => {
+      return await octokit.request(`POST /repos/${owner}/${repo}/git/blobs`, {
+        content,
+      });
+    };
+    const deleteFile = async (path: string) => {
       return await octokit.request(
-        `${type} /repos/${owner}/${repo}/git/blobs`,
-        {
-          content,
-        },
+        `DELETE /repos/${owner}/${repo}/contents/${path}`,
       );
     };
     const createNewTree = async (base_tree: string, treeList: any[]) => {
@@ -73,6 +75,8 @@ export default {
       getTree,
       /** 获取远程文件的内容 */
       getContent,
+      /** 删除文件 */
+      deleteFile,
       /** 创建水滴 */
       createNewFile,
       /** 创建树 */

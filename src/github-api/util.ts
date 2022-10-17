@@ -25,6 +25,7 @@ export const loopTree = async (
     const fileItem: FileProps = {
       status: 'nomal',
       name: item.path,
+      sha: item.sha,
       path: partent ? partent.path + '/' + item.path : item.path,
       remotePath: partent ? partent.path + '/' + item.path : item.path,
       type: item.type === 'tree' ? 'directory' : 'file',
