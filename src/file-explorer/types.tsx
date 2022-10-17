@@ -26,7 +26,7 @@ export interface FileProps {
   /** git 远程路径 */
   remotePath?: string;
   /** git文件状态 */
-  gitStatus?: 'U' | 'M' | undefined;
+  gitStatus?: 'U' | 'M' | 'D' | undefined;
   /** 是否展示 diff 对比 */
   showDiff?: boolean;
 }
@@ -43,7 +43,7 @@ export interface FileExplorerProps {
   /** 重命名文件 */
   onRenameFile?: (file: FileProps) => Promise<void>;
   /** 删除文件 */
-  onDeleteFile?: (file: FileProps) => Promise<void>;
+  onDeleteFile?: (file: FileProps, files: FileProps[]) => Promise<void>;
   /** 刷新文件 */
   onRefresh?: () => void;
   /** 项目名称 */

@@ -232,7 +232,7 @@ export default ({
       try {
         explorerSpin.open();
         // 等待外面确认
-        await onDeleteFile(file);
+        await onDeleteFile(file, files);
         setFiles([...files]);
       } catch (error) {
         console.log(error);

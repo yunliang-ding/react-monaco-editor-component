@@ -23,10 +23,13 @@ export default {
         `GET /repos/${owner}/${repo}/git/blobs/${content}`,
       );
     };
-    const createNewFile = async (content: string) => {
-      return await octokit.request(`POST /repos/${owner}/${repo}/git/blobs`, {
-        content,
-      });
+    const createNewFile = async (content: string, type = 'POST') => {
+      return await octokit.request(
+        `${type} /repos/${owner}/${repo}/git/blobs`,
+        {
+          content,
+        },
+      );
     };
     const createNewTree = async (base_tree: string, treeList: any[]) => {
       return octokit.request(`POST /repos/${owner}/${repo}/git/trees`, {

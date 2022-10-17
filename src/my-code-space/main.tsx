@@ -14,7 +14,12 @@ import {
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { editorRefInstance } from '@/file-editor/types';
 import { getFileByPath } from '@/util';
-import { commitAndPushCode, getDiffTreeData } from './util';
+import {
+  addDiffTreeFile,
+  commitAndPushCode,
+  getDiffTree,
+  setDiffTree,
+} from './util';
 
 const prefixCls = 'my-code-space-main';
 
@@ -59,8 +64,9 @@ export default ({
       localStorage.setItem('my-code-space-tree-data', JSON.stringify(treeData));
     }
     fristRender.current = false;
+    setDiffTree(treeData);
     // 同步 diff 个数
-    setDiffCount(getDiffTreeData(treeData).length);
+    setDiffCount(getDiffTree().length);
   }, [treeData]);
   return (
     <div className={prefixCls}>
@@ -96,13 +102,16 @@ export default ({
                 }
               }}
               onCreateFile={async (file, files) => {
+                await new Promise((res) => setTimeout(res, 1000));
                 setTreeData([...files]);
               }}
               onRenameFile={async (file) => {
-                await new Promise((res) => setTimeout(res, 2000));
+                await new Promise((res) => setTimeout(res, 1000));
               }}
-              onDeleteFile={async (file) => {
-                await new Promise((res) => setTimeout(res, 2000));
+              onDeleteFile={async (file, files) => {
+                addDiffTreeFile(file);
+                await new Promise((res) => setTimeout(res, 1000));
+                setTreeData([...files]);
               }}
             />
           </div>
@@ -124,13 +133,13 @@ export default ({
           >
             <GitManager
               explorerRef={explorerGitRef}
-              treeData={getDiffTreeData(treeData)}
+              treeData={getDiffTree()}
               onRefresh={queryGit}
               onCommit={async (message, diffTree) => {
                 try {
                   await commitAndPushCode(message, diffTree, githubInstance);
                   // 同步本地文件
-                  getDiffTreeData(treeData, false).forEach((item) => {
+                  getDiffTree().forEach((item) => {
                     item.remoteContent = item.content;
                     item.remotePath = item.path;
                     delete item.gitStatus;

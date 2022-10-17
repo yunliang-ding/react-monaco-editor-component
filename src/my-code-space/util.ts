@@ -2,33 +2,42 @@
 import { FileProps } from '..';
 
 /** 获取 diff 树 */
-export const getDiffTreeData = (treeData: FileProps[], isDeep = true) => {
+export const getDiffTree = (): FileProps[] => {
+  const diffData = JSON.parse(localStorage.getItem('my-code-space-diff-tree'));
+  return diffData || [];
+};
+
+// 本地存 diff 信息
+export const setDiffTree = (treeData) => {
   const diffTree = {
     data: [],
   };
-  getDiffTreeDataByLoop(treeData, diffTree.data, isDeep);
-  return diffTree.data;
+  setDiffTreeDataByLoop(treeData, diffTree.data);
+  localStorage.setItem(
+    'my-code-space-diff-tree',
+    JSON.stringify(diffTree.data),
+  );
 };
 
+export const addDiffTreeFile = (diffFile: FileProps) => {
+  const diffData = getDiffTree();
+  diffData.push(diffFile);
+  localStorage.setItem('my-code-space-diff-tree', JSON.stringify(diffData));
+};
+
+export const deleteDiffTreeFile = () => {};
+
 /** diff Tree */
-export const getDiffTreeDataByLoop = (
-  treeData: FileProps[],
-  diffTree,
-  isDeep,
-) => {
+export const setDiffTreeDataByLoop = (treeData: FileProps[], diffTree) => {
   for (let i = 0; i < treeData.length; i++) {
     const item = treeData[i];
     if (item.type === 'directory') {
-      getDiffTreeDataByLoop(item.children, diffTree, isDeep);
+      setDiffTreeDataByLoop(item.children, diffTree);
     } else if (item.gitStatus !== undefined) {
-      if (isDeep) {
-        diffTree.push({
-          ...item,
-          showDiff: true,
-        });
-      } else {
-        diffTree.push(item);
-      }
+      diffTree.push({
+        ...item,
+        showDiff: true,
+      });
     }
   }
 };
