@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-return-assign */
 import { explorerRefInstance } from '@/file-explorer/types';
@@ -13,8 +14,6 @@ import {
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { editorRefInstance } from '@/file-editor/types';
 import { getFileByPath } from '@/util';
-import Playground from './playground';
-import { CreateDrawer } from 'react-core-form';
 import { commitAndPushCode, getDiffTreeData } from './util';
 
 const prefixCls = 'my-code-space-main';
@@ -171,25 +170,7 @@ export default ({
                   return file.extension === '.tsx';
                 },
                 onClick(file) {
-                  CreateDrawer({
-                    footer: false,
-                  }).open({
-                    drawerProps: {
-                      style: {
-                        top: 36,
-                        height: 'calc(100vh - 58px)',
-                      },
-                      headerStyle: {
-                        display: 'none',
-                      },
-                      bodyStyle: {
-                        padding: 0,
-                      },
-                    },
-                    render() {
-                      return <Playground code={file.content} />;
-                    },
-                  });
+                  console.log(file);
                 },
               },
               {

@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import { FileProps } from '..';
 
 /** 获取 diff 树 */

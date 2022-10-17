@@ -39,18 +39,14 @@
     "lodash": "4.17.21",
     "monaco-editor": "0.33.0",
     "react-dom": "17.0.2",
-    "react-core-form": "0.0.16",
-    "react-core-form-designer": "0.0.6",
     "react-contexify": "5.0.0",
     "@octokit/core": "4.0.5",
-    "antd": "4.23.5",
     "js-base64": "3.7.2"
   },
   "peerDependencies": {
     "react": "17.0.2"
   },
   "devDependencies": {
-    "react-core-form": "0.0.15",
     "@types/lodash": "4.14.168",
     "@umijs/test": "^3.0.5",
     "@types/ali-oss": "6.16.3",
