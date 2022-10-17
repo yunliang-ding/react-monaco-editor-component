@@ -15,7 +15,6 @@ const prefixCls = 'ide-component-file-explorer';
 
 const explorerSpin = CreateSpin({
   getContainer: () => document.querySelector(`.${prefixCls}`),
-  text: '加载中...',
 });
 
 const MENU_ID = 'justTest';
@@ -165,17 +164,18 @@ export default ({
       fileName.lastIndexOf('.'),
     );
     editFileRef.current.name = fileName;
+    editFileRef.current.gitStatus = 'U';
     editFileRef.current.path = [
       path.substring(0, path.lastIndexOf('/')),
       fileName,
-    ].join('/');
+    ]
+      .filter((i) => i)
+      .join('/');
     editFileRef.current.status = 'nomal';
     // 等待外面确认
     try {
-      explorerSpin.open({
-        text: '创建中...',
-      });
-      await onCreateFile(editFileRef.current);
+      explorerSpin.open();
+      await onCreateFile(editFileRef.current, files);
       setFiles([...files]);
     } catch (error) {
       console.log(error);
@@ -206,9 +206,7 @@ export default ({
     ].join('/');
     // 等待外面确认
     try {
-      explorerSpin.open({
-        text: '重命名中...',
-      });
+      explorerSpin.open();
       await onRenameFile(editFileRef.current);
       setFiles([...files]);
     } catch (error) {
@@ -232,9 +230,7 @@ export default ({
     root.splice(index, 1);
     if (isCheck) {
       try {
-        explorerSpin.open({
-          text: '删除中...',
-        });
+        explorerSpin.open();
         // 等待外面确认
         await onDeleteFile(file);
         setFiles([...files]);

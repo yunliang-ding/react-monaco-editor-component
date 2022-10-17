@@ -39,7 +39,7 @@ export interface FileExplorerProps {
   /** 文件点击 */
   onClick?: (file: FileProps) => void;
   /** 创建文件或者文件夹 */
-  onCreateFile?: (file: FileProps) => Promise<void>;
+  onCreateFile?: (file: FileProps, files: FileProps[]) => Promise<void>;
   /** 重命名文件 */
   onRenameFile?: (file: FileProps) => Promise<void>;
   /** 删除文件 */

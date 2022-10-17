@@ -43,7 +43,6 @@ export default ({
   const domKey = useMemo(() => `class-${uuid(12)}`, []);
   const spin = CreateSpin({
     getContainer: () => document.querySelector(`.${domKey}`),
-    text: '保存中...',
   });
   const [reload, setReload] = useState(Math.random());
   const [files, setFiles] = useState<FileProps[]>(

@@ -7,7 +7,6 @@ import './index.less';
 
 const explorerSpin = CreateSpin({
   getContainer: () => document.querySelector('#playground-root'),
-  text: '加载中...',
 });
 export default (props) => {
   const { code } = props; // getUrlSearchParams(props.location.search);

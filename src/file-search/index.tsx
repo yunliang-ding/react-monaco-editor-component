@@ -12,7 +12,6 @@ const prefixCls = 'ide-editor-file-search';
 
 const spin = CreateSpin({
   getContainer: () => document.querySelector(`.${prefixCls}`),
-  text: '查找中...',
 });
 
 export default ({

@@ -95,8 +95,8 @@ export default ({
                   setTreeData([...treeData]);
                 }
               }}
-              onCreateFile={async (file) => {
-                await new Promise((res) => setTimeout(res, 2000));
+              onCreateFile={async (file, files) => {
+                setTreeData([...files]);
               }}
               onRenameFile={async (file) => {
                 await new Promise((res) => setTimeout(res, 2000));
@@ -199,7 +199,7 @@ export default ({
               const treeFile = getFileByPath(file.path, treeData);
               treeFile.content = code;
               if (code !== treeFile.remoteContent) {
-                treeFile.gitStatus = 'M';
+                treeFile.gitStatus = treeFile.gitStatus || 'M';
                 setTreeData([...treeData]);
               } else {
                 delete treeFile.gitStatus;

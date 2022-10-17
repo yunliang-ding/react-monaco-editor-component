@@ -5,18 +5,17 @@ const $: any = document.querySelector.bind(document);
 
 export interface CreateSpinProps {
   getContainer: () => HTMLElement | null;
-  text?: string;
 }
 
 const close = () => {
   $('#spinid_20220520')?.remove();
 };
 
-const SpinComponent = ({ text = '加载中...' }) => {
+const SpinComponent = () => {
   return <div className="create-spin-loading" />;
 };
 
-const CreateSpin = ({ getContainer, ...props }: CreateSpinProps) => {
+const CreateSpin = ({ getContainer }: CreateSpinProps) => {
   const tag = document.createElement('div');
   tag.setAttribute('id', 'spinid_20220520');
   tag.style.width = '100%';
@@ -24,7 +23,7 @@ const CreateSpin = ({ getContainer, ...props }: CreateSpinProps) => {
   tag.style.position = 'absolute';
   tag.style.top = '0';
   getContainer()?.appendChild(tag);
-  ReactDOM.render(<SpinComponent {...props} />, tag);
+  ReactDOM.render(<SpinComponent />, tag);
   return null;
 };
 

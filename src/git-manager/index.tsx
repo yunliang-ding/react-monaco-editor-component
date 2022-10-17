@@ -1,3 +1,4 @@
+/* eslint-disable require-atomic-updates */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { GitManageProps } from './types';
 import FileExplorer, { sleep } from '../file-explorer';
@@ -11,7 +12,6 @@ const prefixCls = 'ide-editor-git-manage';
 
 const spin = CreateSpin({
   getContainer: () => document.querySelector(`.${prefixCls}`),
-  text: '提交中...',
 });
 
 export default ({
