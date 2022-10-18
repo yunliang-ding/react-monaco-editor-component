@@ -103,11 +103,11 @@ export default ({
                 }
               }}
               onCreateFile={async (file, files) => {
-                await new Promise((res) => setTimeout(res, 1000));
+                await new Promise((res) => setTimeout(res, 500));
                 setTreeData([...files]);
               }}
               onRenameFile={async (file) => {
-                await new Promise((res) => setTimeout(res, 1000));
+                await new Promise((res) => setTimeout(res, 500));
               }}
               onDeleteFile={async (file, files) => {
                 if (file.gitStatus !== 'U') {
@@ -116,7 +116,9 @@ export default ({
                     gitStatus: 'D',
                   });
                 }
-                await new Promise((res) => setTimeout(res, 1000));
+                await new Promise((res) => setTimeout(res, 500));
+                // 同步删除 Tab
+                editorRef.current.removeTab(file.path);
                 setTreeData([...files]);
               }}
             />

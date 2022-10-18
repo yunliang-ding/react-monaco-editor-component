@@ -93,6 +93,13 @@ export default ({
       }
       setSelectedKey(tab.path);
     };
+    // 删除 tab
+    editorRef.current.removeTab = (path: string) => {
+      setFiles(files?.filter((i) => i.path !== path));
+      if (path === selectedKey) {
+        setSelectedKey(files?.[0].path);
+      }
+    };
     // 新增 Diff 编辑器
     editorRef.current.addDiffTab = (tabProps) => {
       const tab = {

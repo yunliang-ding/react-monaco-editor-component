@@ -39,6 +39,8 @@ export interface FileEditorProps {
 export interface editorRefInstance {
   /** 打开一个 Tab */
   addTab: (tabProps: FileProps) => void;
+  /** 删除一个 Tab */
+  removeTab: (path: string) => void;
   /** 打开文件对比的 Tab */
   addDiffTab: (tabProps: FileProps) => void;
   /** 切换到指定的Tab */
