@@ -1,13 +1,20 @@
 /* eslint-disable no-await-in-loop */
 import { FileProps } from '..';
 
+const prefix = 'my-code-space-diff-tree';
+
 /** 获取 diff 树 */
 export const getDiffTree = (): FileProps[] => {
-  const diffData = JSON.parse(localStorage.getItem('my-code-space-diff-tree'));
+  const diffData = JSON.parse(localStorage.getItem(prefix));
   return diffData || [];
 };
 
-// 本地存 diff 信息
+/** 清空 diff 树 */
+export const clearDiffTree = () => {
+  localStorage.removeItem(prefix);
+};
+
+/** 设置 diff 树 */
 export const setDiffTree = (treeData) => {
   const data = getDiffTree();
   const diffTree = {
@@ -15,7 +22,7 @@ export const setDiffTree = (treeData) => {
   };
   setDiffTreeDataByLoop(treeData, diffTree.data);
   localStorage.setItem(
-    'my-code-space-diff-tree',
+    prefix,
     JSON.stringify([
       ...diffTree.data,
       ...data.filter((i) => i.gitStatus === 'D'),
@@ -26,7 +33,7 @@ export const setDiffTree = (treeData) => {
 export const addDiffTreeFile = (diffFile: FileProps) => {
   const diffData = getDiffTree();
   diffData.push(diffFile);
-  localStorage.setItem('my-code-space-diff-tree', JSON.stringify(diffData));
+  localStorage.setItem(prefix, JSON.stringify(diffData));
 };
 
 export const deleteDiffTreeFile = () => {};
@@ -60,14 +67,12 @@ export const commitAndPushCode = async (
     const item = diffTree[i];
     const {
       data: { sha: sha2 },
-    } = await (item.gitStatus === 'D'
-      ? githubInstance.deleteFile(item.path)
-      : githubInstance.createNewFile(item.content));
+    } = await githubInstance.createNewFile(item.content);
     diffFileSha.push({
       path: item.path,
       mode: '100644',
       type: 'blob',
-      sha: sha2,
+      sha: item.gitStatus === 'D' ? null : sha2, // sha 为空则删除
     });
   }
   const {
@@ -78,4 +83,5 @@ export const commitAndPushCode = async (
     message,
     tree: sha3,
   });
+  clearDiffTree();
 };

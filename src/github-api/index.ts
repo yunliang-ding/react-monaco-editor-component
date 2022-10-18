@@ -28,11 +28,6 @@ export default {
         content,
       });
     };
-    const deleteFile = async (path: string) => {
-      return await octokit.request(
-        `DELETE /repos/${owner}/${repo}/contents/${path}`,
-      );
-    };
     const createNewTree = async (base_tree: string, treeList: any[]) => {
       return octokit.request(`POST /repos/${owner}/${repo}/git/trees`, {
         base_tree,
@@ -75,8 +70,6 @@ export default {
       getTree,
       /** 获取远程文件的内容 */
       getContent,
-      /** 删除文件 */
-      deleteFile,
       /** 创建水滴 */
       createNewFile,
       /** 创建树 */
