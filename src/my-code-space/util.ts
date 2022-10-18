@@ -83,5 +83,4 @@ export const commitAndPushCode = async (
     message,
     tree: sha3,
   });
-  clearDiffTree();
 };

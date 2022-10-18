@@ -16,6 +16,7 @@ import { editorRefInstance } from '@/file-editor/types';
 import { getFileByPath } from '@/util';
 import {
   addDiffTreeFile,
+  clearDiffTree,
   commitAndPushCode,
   getDiffTree,
   setDiffTree,
@@ -145,20 +146,28 @@ export default ({
                   await commitAndPushCode(message, diffTree, githubInstance);
                   // 同步本地文件
                   getDiffTree().forEach((item) => {
-                    item.remoteContent = item.content;
-                    item.remotePath = item.path;
-                    delete item.gitStatus;
+                    const treeFile = getFileByPath(
+                      item.path.replace('~diff/', ''),
+                      treeData,
+                    );
+                    treeFile.remoteContent = treeFile.content;
+                    treeFile.remotePath = treeFile.path;
+                    delete treeFile.gitStatus;
                     // 更新 Tab
-                    editorRef.current.updateTabByPath(item.path, {
-                      remoteContent: item.content,
+                    editorRef.current.updateTabByPath(treeFile.path, {
+                      remoteContent: treeFile.content,
                       gitStatus: undefined,
                     });
                     // 更新 Diff Tab
-                    editorRef.current.updateTabByPath(`~diff/${item.path}`, {
-                      remoteContent: item.content,
-                      gitStatus: undefined,
-                    });
+                    editorRef.current.updateTabByPath(
+                      `~diff/${treeFile.path}`,
+                      {
+                        remoteContent: treeFile.content,
+                        gitStatus: undefined,
+                      },
+                    );
                   });
+                  clearDiffTree();
                   setTreeData([...treeData]);
                 } catch (error) {
                   alert('代码提交失败');
