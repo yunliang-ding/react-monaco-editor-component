@@ -6,7 +6,7 @@ const $: any = document.querySelector.bind(document);
 
 export interface CreateSpinProps {
   getContainer: () => HTMLElement | null;
-  style: CSSProperties;
+  style?: CSSProperties;
 }
 
 const close = () => {

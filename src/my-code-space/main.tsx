@@ -193,8 +193,9 @@ export default ({
                 icon: 'codicon codicon-open-preview',
                 title: '预览',
                 visible(file) {
-                  return ['.tsx', '.jsx', '.ts', '.js'].includes(
-                    file.extension,
+                  return (
+                    ['.tsx', '.jsx', '.ts', '.js'].includes(file.extension) &&
+                    !file.path.startsWith('~diff')
                   );
                 },
                 onClick(file) {
@@ -211,8 +212,8 @@ export default ({
                 onClick(file) {
                   editorRef.current.addDiffTab(file);
                 },
-                visible: ({ gitStatus }) => {
-                  return gitStatus !== undefined;
+                visible: ({ gitStatus, path }) => {
+                  return gitStatus !== undefined && !path.startsWith('~diff');
                 },
               },
             ]}
@@ -252,7 +253,7 @@ export default ({
                 previewRef.current.path === file.path &&
                 previewRef.current.open
               ) {
-                previewRef.current.code = file.content;
+                previewRef.current.code = code;
                 previewRef.current.reload();
               }
             }}
