@@ -197,4 +197,51 @@ div {
       justify-content: center;
     }
   }
+
+  &-preview {
+    width: 600px;
+    height: calc(100vh - 55px);
+    position: absolute;
+    top: 35px;
+    right: 0;
+    background-color: #fff;
+    &-header {
+      height: 40px;
+      width: 100%;
+      background-color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee;
+      gap: 6px;
+      .codicon {
+        font-size: 18px;
+        font-weight: 600;
+        color: #666;
+        width: 30px;
+        display: flex;
+        justify-content: center;
+        cursor: pointer;
+      }
+      input {
+        font-size: 12px;
+        font-weight: 500;
+        color: #555;
+        border: 0;
+        width: 530px;
+        overflow: auto;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        border-radius: 20px;
+        padding: 6px 10px;
+        background-color: #eee;
+        outline: none;
+      }
+    }
+    iframe {
+      height: calc(100vh - 95px);
+      border: 0;
+      width: 100%;
+    }
+  }
 }

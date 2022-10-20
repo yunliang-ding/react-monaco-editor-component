@@ -214,12 +214,15 @@ const CacheEditor = memo(
         editorMonacoRef={editorMonacoRef}
         mode={file.showDiff ? 'diff' : undefined}
         monacoOptions={{
-          language: {
-            '.json': 'json',
-            '.js': 'javascript',
-            '.ts': 'javascript',
-            '.tsx': 'javascript',
-          }[file.extension],
+          language:
+            {
+              '.json': 'json',
+              '.md': 'markdown',
+              '.js': 'javascript',
+              '.jsx': 'javascript',
+              '.ts': 'javascript',
+              '.tsx': 'javascript',
+            }[file.extension] || 'javascript',
           ...monacoOptions,
         }}
         value={file.content}

@@ -30,6 +30,7 @@ export default ({
   siderKey,
   setNotSaveCount,
   setDiffCount,
+  previewRef,
 }) => {
   const explorerRef = useRef<explorerRefInstance>({} as any);
   const explorerGitRef = useRef<explorerRefInstance>({} as any);
@@ -192,10 +193,15 @@ export default ({
                 icon: 'codicon codicon-open-preview',
                 title: '预览',
                 visible(file) {
-                  return file.extension === '.tsx';
+                  return ['.tsx', '.jsx', '.ts', '.js'].includes(
+                    file.extension,
+                  );
                 },
                 onClick(file) {
-                  console.log(file);
+                  // 打开预览
+                  previewRef.current.code = file.content;
+                  previewRef.current.path = file.path;
+                  previewRef.current.open();
                 },
               },
               {
@@ -241,6 +247,14 @@ export default ({
                 gitStatus: treeFile.gitStatus,
               });
               setNotSaveCount(editorRef.current.getTotalNotSaveCount());
+              // 刷新预览页面
+              if (
+                previewRef.current.path === file.path &&
+                previewRef.current.open
+              ) {
+                previewRef.current.code = file.content;
+                previewRef.current.reload();
+              }
             }}
           />
         </div>

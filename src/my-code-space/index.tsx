@@ -1,8 +1,9 @@
-import { useState, CSSProperties } from 'react';
+import { useState, CSSProperties, useRef } from 'react';
 import { GitHubApiProps } from '../github-api';
 import Sider from './sider';
 import Footer from './footer';
 import Main from './main';
+import Preview from './preview';
 import './index.less';
 
 interface MyCodeSpaceProps {
@@ -24,6 +25,7 @@ export default ({
   const [notSaveCount, setNotSaveCount] = useState<number>(0);
   const [diffCount, setDiffCount] = useState<number>(0);
   const [collapsed, setCollapsed] = useState(false);
+  const previewRef = useRef({});
   // 侧边栏点击
   const siderBarClick = (key) => {
     if (key === siderKey) {
@@ -47,7 +49,9 @@ export default ({
         collapsed={collapsed}
         siderKey={siderKey}
         setDiffCount={setDiffCount}
+        previewRef={previewRef}
       />
+      <Preview previewRef={previewRef} />
       <Footer currentBranch={gitConfig.branch} diffCount={diffCount} />
     </div>
   );
