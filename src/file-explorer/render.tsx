@@ -2,7 +2,7 @@
 import { Fragment } from 'react';
 import { iconMapping } from '@/icon-mapping';
 
-const initialPadding = 8;
+const initialPadding = 12;
 
 /** icon渲染 */
 export const iconRender = (file) => {
