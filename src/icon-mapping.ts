@@ -1,5 +1,6 @@
 export const iconMapping = {
   '.json': 'json-lang-file-icon',
+  '.prettierrc': 'json-lang-file-icon',
   '.js': 'javascript-lang-file-icon',
   '.jsx': 'javascript-lang-file-icon',
   '.ts': 'typescriptreact-lang-file-icon',
@@ -9,6 +10,10 @@ export const iconMapping = {
   '.less': 'less-lang-file-icon',
   '.py': 'python-lang-file-icon',
   '.md': 'markdown-lang-file-icon',
-  '.ignore': 'ignore-lang-file-icon',
+  '.eslintignore': 'ignore-lang-file-icon',
+  '.npmignore': 'ignore-lang-file-icon',
+  '.gitignore': 'ignore-lang-file-icon',
+  '.prettierignore': 'ignore-lang-file-icon',
   '.preview': 'javascriptreact-lang-file-icon',
+  '.editorconfig': 'properties-lang-file-icon',
 };

@@ -43,6 +43,9 @@ export default ({
   const domKey = useMemo(() => `class-${uuid(12)}`, []);
   const spin = CreateSpin({
     getContainer: () => document.querySelector(`.${domKey}`),
+    style: {
+      top: 0,
+    },
   });
   const [reload, setReload] = useState(Math.random());
   const [files, setFiles] = useState<FileProps[]>(
@@ -84,6 +87,7 @@ export default ({
   // 扩展相关的 API
   const fristRender = useRef(true);
   useEffect(() => {
+    editorRef.current.spin = spin;
     // 新增tab
     editorRef.current.addTab = (tab: any) => {
       // 不存在就添加

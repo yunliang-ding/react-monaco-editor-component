@@ -4,7 +4,6 @@
 /* eslint-disable @iceworks/best-practices/recommend-polyfill */
 import { FileProps } from '@/file-explorer/types';
 import request from './request';
-import { fromBase64 } from 'js-base64';
 /** 递归节点 */
 export const loopTree = async (
   tree: any[],
@@ -17,8 +16,8 @@ export const loopTree = async (
   const file = tree.filter((i) => i.type === 'blob');
   // 排序逻辑
   const sortTree = [
-    directory.sort((a, b) => (a.path > b.path ? -1 : 1)),
-    file.sort((a, b) => (a.path > b.path ? -1 : 1)),
+    directory.sort((a, b) => (a.path > b.path ? 1 : -1)),
+    file.sort((a, b) => (a.path > b.path ? 1 : -1)),
   ].flat();
   for (let i = 0; i < tree.length; i++) {
     const item = sortTree[i];
@@ -34,11 +33,6 @@ export const loopTree = async (
     if (item.type === 'blob') {
       fileItem.extension = getFileExtension(fileItem.path);
       fileItem.size = item.size;
-      const {
-        data: { content },
-      } = await getContent(item.sha);
-      fileItem.content = fromBase64(content);
-      fileItem.remoteContent = fromBase64(content);
     }
     if (item.type === 'tree') {
       fileItem.children = await loopTree(

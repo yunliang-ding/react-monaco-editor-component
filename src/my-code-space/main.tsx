@@ -21,6 +21,7 @@ import {
   getDiffTree,
   setDiffTree,
 } from './util';
+import { fromBase64 } from 'js-base64';
 
 const prefixCls = 'my-code-space-main';
 
@@ -92,16 +93,26 @@ export default ({
               explorerRef={explorerRef}
               treeData={treeData}
               onRefresh={queryTree}
-              onClick={(file) => {
-                if (file.type === 'file') {
-                  setActiveKey(file.path);
-                  editorRef.current.addTab(file as any);
+              onClick={async (f) => {
+                const treeFile = getFileByPath(f.path, treeData);
+                if (treeFile.type === 'file') {
+                  // 加载文件内容，如果还没有缓存的话
+                  if (!treeFile.content && treeFile.gitStatus !== 'U') {
+                    editorRef.current.spin.open();
+                    const {
+                      data: { content },
+                    } = await githubInstance.getContent(treeFile.sha);
+                    treeFile.content = fromBase64(content);
+                    treeFile.remoteContent = fromBase64(content);
+                    editorRef.current.spin.close();
+                  }
+                  setActiveKey(treeFile.path);
+                  editorRef.current.addTab(treeFile as any);
                 } else {
-                  const treeFile = getFileByPath(file.path, treeData);
                   treeFile.status =
                     treeFile.status === 'expanded' ? 'nomal' : 'expanded';
-                  setTreeData([...treeData]);
                 }
+                setTreeData([...treeData]);
               }}
               onCreateFile={async (file, files) => {
                 await new Promise((res) => setTimeout(res, 500));

@@ -37,6 +37,8 @@ export interface FileEditorProps {
 }
 
 export interface editorRefInstance {
+  /** 控制loading */
+  spin?: any;
   /** 打开一个 Tab */
   addTab: (tabProps: FileProps) => void;
   /** 删除一个 Tab */

@@ -14,7 +14,7 @@ export default ({ previewRef }) => {
   useEffect(() => {
     previewSpin.open();
   }, [reload, open]);
-  const link = `https://yunliang-ding.github.io/react-playground/#/~demos/iframe-demo?code=${btoa(
+  const link = `https://yunliang-ding.github.io/react-playground/#/~demos/docs-iframe?code=${btoa(
     encodeURIComponent(previewRef.current.code),
   )}`;
   useEffect(() => {
