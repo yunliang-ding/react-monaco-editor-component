@@ -16,8 +16,10 @@ export const loopTree = async (
   const file = tree.filter((i) => i.type === 'blob');
   // 排序逻辑
   const sortTree = [
-    directory.sort((a, b) => (a.path > b.path ? 1 : -1)),
-    file.sort((a, b) => (a.path > b.path ? 1 : -1)),
+    directory.sort((a, b) =>
+      a.path.toLowerCase() > b.path.toLowerCase() ? 1 : -1,
+    ),
+    file.sort((a, b) => (a.path.toLowerCase() > b.path.toLowerCase() ? 1 : -1)),
   ].flat();
   for (let i = 0; i < tree.length; i++) {
     const item = sortTree[i];
