@@ -224,8 +224,8 @@ const CacheEditor = memo(
               '.md': 'markdown',
               '.js': 'javascript',
               '.jsx': 'javascript',
-              '.ts': 'javascript',
-              '.tsx': 'javascript',
+              '.ts': 'typescript',
+              '.tsx': 'typescript',
             }[file.extension] || 'javascript',
           ...monacoOptions,
         }}
