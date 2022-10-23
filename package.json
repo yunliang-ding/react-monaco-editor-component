@@ -1,6 +1,6 @@
 {
   "name": "react-monaco-editor-component",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "基于 monaco-edito 实现一套 web-ide 相关组件",
   "author": "yunliang-ding",
   "homepage": "https://yunliang-ding.github.io/react-monaco-editor-component",
@@ -41,7 +41,8 @@
     "react-dom": "17.0.2",
     "react-contexify": "5.0.0",
     "@octokit/core": "4.0.5",
-    "js-base64": "3.7.2"
+    "js-base64": "3.7.2",
+    "react-split-pane": "0.1.92"
   },
   "peerDependencies": {
     "react": "17.0.2"
@@ -62,8 +63,7 @@
     "monaco-editor-webpack-plugin": "7.0.1",
     "prettier": "^2.2.1",
     "yorkie": "^2.0.0",
-    "@types/react": "17.0.2",
-    "react-split-pane": "0.1.92"
+    "@types/react": "17.0.2"
   },
   "license": "MIT"
 }
