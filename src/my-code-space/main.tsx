@@ -232,7 +232,11 @@ export default ({
               setActiveKey(file.path);
             }}
             onClose={(file) => {
-              setActiveKey(file?.path);
+              if (file) {
+                setActiveKey(file?.path);
+              } else {
+                previewRef.current.close();
+              }
             }}
             onChange={(code) => {
               setNotSaveCount(editorRef.current.getTotalNotSaveCount());
