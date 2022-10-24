@@ -4,6 +4,7 @@ import { editor } from 'monaco-editor';
 import { useEffect, useRef, CSSProperties, MutableRefObject } from 'react';
 import './index.less';
 
+// default options
 const defaultOptions: editor.IStandaloneEditorConstructionOptions = {
   value: '',
   language: 'javascript',
@@ -17,6 +18,27 @@ const defaultOptions: editor.IStandaloneEditorConstructionOptions = {
     enabled: true,
   },
 };
+
+// compiler options
+monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+  target: monaco.languages.typescript.ScriptTarget.ES2016,
+  allowNonTsExtensions: true,
+  moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+  module: monaco.languages.typescript.ModuleKind.CommonJS,
+  noEmit: true,
+  typeRoots: ['node_modules/@types'],
+});
+
+// extra libraries
+monaco.languages.typescript.typescriptDefaults.addExtraLib(
+  `export declare function next() : string`,
+  'node_modules/@types/external/index.d.ts',
+);
+
+monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+  noSemanticValidation: true,
+  noSyntaxValidation: true, // This line disables errors in jsx tags like <div>, etc.
+});
 
 export interface MonacoProps {
   value: string;
@@ -54,6 +76,11 @@ export default ({
     });
     editorMonacoRef.current = monacoInstance; // 挂到ref
     window[id] = monacoInstance; // 挂在到 window
+    // 设置主题
+    import('monaco-themes/themes/Tomorrow-Night.json').then((data: any) => {
+      console.log(data);
+      // monaco.editor.defineTheme('vs-dark', data);
+    });
     return () => {
       delete window[id];
     };
