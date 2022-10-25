@@ -10,7 +10,7 @@ div {
 
   &-sider {
     width: 52px;
-    height: calc(100% - 22px);
+    height: calc(~'100% - 22px');
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -83,8 +83,8 @@ div {
 
   &-main {
     display: flex;
-    width: calc(100% + 4px);
-    height: calc(100% - 22px);
+    width: calc(~'100% + 4px');
+    height: calc(~'100% - 22px');
 
     .action-label {
       padding: 3px;
@@ -101,7 +101,7 @@ div {
     }
 
     &-sider {
-      height: calc(100% - 22px);
+      height: calc(~'100% - 22px');
       overflow: hidden;
 
       &-content {
@@ -111,7 +111,7 @@ div {
     }
 
     &-content {
-      height: calc(100% - 22px);
+      height: calc(~'100% - 22px');
       position: relative;
     }
 
@@ -200,7 +200,7 @@ div {
 
   &-preview {
     width: 600px;
-    height: calc(100vh - 55px);
+    height: calc(~'100% - 55px');
     position: absolute;
     top: 35px;
     right: 0;
@@ -238,7 +238,7 @@ div {
       }
     }
     iframe {
-      height: calc(100vh - 95px);
+      height: calc(~'100% - 95px');
       border: 0;
       width: 100%;
     }
